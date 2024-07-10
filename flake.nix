@@ -20,7 +20,7 @@
         src = nixpkgs.lib.sourceFilesBySuffices self [ ".conf" ".keymap" ".dtsi" ".yml" ];
 
         board = "nice_nano_v2";
-        shield = "lily58_%PART%";
+        shield = "cradio_%PART%";
 
         zephyrDepsHash = "sha256-n7xX/d8RLqDyPOX4AEo5hl/3tQtY6mZ6s8emYYtOYOg=";
 
