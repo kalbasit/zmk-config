@@ -5,6 +5,10 @@
 #include <dt-bindings/zmk/keys.h>
 #include <dt-bindings/zmk/bt.h>
 
+// define the row modifiers
+#define FRML(k1,k2,k3) &ht LCTRL k1  &ht LALT k2  &ht LCMD k3
+#define FRMR(k1,k2,k3) &ht RCMD k1  &ht RALT k2  &ht RCTRL k3
+
 / {
     behaviors {
         ht: hold_tap {
@@ -24,7 +28,7 @@
             bindings = <
         //╭──────────┬──────────┬──────────┬──────────┬──────────╮   ╭──────────┬──────────┬──────────┬──────────┬──────────╮
         //│  Q       │  W       │  F       │  P       │  G       │   │  J       │  L       │  U       │  Y       │  ;       │
-            &kp Q      &kp W      &kp F      &kp P      &kp G          &kp J      &kp L      &kp U      &kp Y      &kp SCLN
+            &kp Q      FRML(W,        F,         P)     &kp G          &kp J      FRMR(L         U,         Y)     &kp SCLN
         //├──────────┼──────────┼──────────┼──────────┼──────────┤   ├──────────┼──────────┼──────────┼──────────┼──────────┤
         //│  A       │  R       │  S       │  T       │  D       │   │  H       │  N       │  E       │  I       │  O       │
             &kp A      &kp R      &kp S      &kp T      &kp D          &kp H      &kp N      &kp E      &kp I      &kp O
