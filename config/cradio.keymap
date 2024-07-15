@@ -54,7 +54,7 @@
         //│  Z       │  X       │  C       │  V       │  B       │   │  K       │  M       │ , <      │ . >      │ / ?      │
           &mt LSHFT Z  &kp X      &kp C      &kp V      &kp B          &kp K      &kp M      &kp COMMA  &kp DOT  &mt RSHFT FSLH
         //╰──────────┴──────────┴──────────┼──────────┼──────────┤   ├──────────┼──────────┼──────────┴──────────┴──────────╯
-                                           &lt SYM BSPC &lt SYS SPACE &lt NAV ENTER &mo NUM
+                                           &lt SYM SPACE &lt SYS BSPC &mo NAV &lt NUM ENTER 
         //                                 ╰──────────┴──────────╯   ╰──────────┴──────────╯
             >;
         };
