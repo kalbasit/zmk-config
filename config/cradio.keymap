@@ -17,6 +17,10 @@
 #define FRML(k1,k2,k3) &mt LCTRL k1  &mt LALT k2  &mt LCMD k3
 #define FRMR(k1,k2,k3) &mt RCMD k1  &mt RALT k2  &mt RCTRL k3
 
+&mt {
+    tapping-term-ms = <250>;
+};
+
 / {
     keymap {
         compatible = "zmk,keymap";
