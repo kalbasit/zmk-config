@@ -27,7 +27,6 @@
             quick-tap-ms = <200>;
             #require-prior-idle-ms = <125>;
             bindings = <&kp>, <&kp>;
-            retro-tap;
         };
     };
 
