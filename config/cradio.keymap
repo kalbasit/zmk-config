@@ -14,14 +14,23 @@
 #define NUM 4
 
 // define the row modifiers
-#define FRML(k1,k2,k3) &mt LCTRL k1  &mt LALT k2  &mt LCMD k3
-#define FRMR(k1,k2,k3) &mt RCMD k1  &mt RALT k2  &mt RCTRL k3
-
-&mt {
-    tapping-term-ms = <250>;
-};
+#define FRML(k1,k2,k3) &ht LCTRL k1  &ht LALT k2  &ht LCMD k3
+#define FRMR(k1,k2,k3) &ht RCMD k1  &ht RALT k2  &ht RCTRL k3
 
 / {
+    behaviors {
+        ht: hold_tap {
+            compatible = "zmk,behavior-hold-tap";
+            #binding-cells = <2>;
+            flavor = "tap-preferred";
+            tapping-term-ms = <200>;
+            quick-tap-ms = <200>;
+            #require-prior-idle-ms = <125>;
+            bindings = <&kp>, <&kp>;
+            retro-tap;
+        };
+    };
+
     keymap {
         compatible = "zmk,keymap";
 
@@ -56,7 +65,7 @@
             &kp A      &kp R      &kp S      &kp T      &kp D          &kp H      &kp N      &kp E      &kp I      &kp O
         //├──────────┼──────────┼──────────┼──────────┼──────────┤   ├──────────┼──────────┼──────────┼──────────┼──────────┤
         //│  Z       │  X       │  C       │  V       │  B       │   │  K       │  M       │ , <      │ . >      │ / ?      │
-          &mt LSHFT Z  &kp X      &kp C      &kp V      &kp B          &kp K      &kp M      &kp COMMA  &kp DOT  &mt RSHFT FSLH
+          &ht LSHFT Z  &kp X      &kp C      &kp V      &kp B          &kp K      &kp M      &kp COMMA  &kp DOT  &ht RSHFT FSLH
         //╰──────────┴──────────┴──────────┼──────────┼──────────┤   ├──────────┼──────────┼──────────┴──────────┴──────────╯
                                            &lt SYM BSPC &lt SYS SPACE &lt NAV ENTER &mo NUM
         //                                 ╰──────────┴──────────╯   ╰──────────┴──────────╯
