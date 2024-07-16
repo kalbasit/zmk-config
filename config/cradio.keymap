@@ -17,6 +17,10 @@
 #define FRML(k1,k2,k3) &ht LCTRL k1  &ht LALT k2  &ht LCMD k3
 #define FRMR(k1,k2,k3) &ht RCMD k1  &ht RALT k2  &ht RCTRL k3
 
+&lt {
+    quick-tap-ms = <200>;
+};
+
 / {
     behaviors {
         ht: hold_tap {
