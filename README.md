@@ -1,6 +1,7 @@
 # 34-key Colemak ZMK Configuration for Cradio (Ferris Sweep)
 
 My layout for the awesome [Ferris Sweep][ferris-sweep], a custom 34-key wireless keyboard (17 keys per half).
+<!-- TODO: Add a picture of my keyboard once it's all finished -->
 
 This ZMK configuration is Nix-based, and uses [zmk-nix][zmk-nix] (Thanks @lilyinstarlight for the awesome project).
 
