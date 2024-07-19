@@ -3,7 +3,7 @@
 My layout for the awesome [Ferris Sweep][ferris-sweep], a custom 34-key wireless keyboard (17 keys per half).
 <!-- TODO: Add a picture of my keyboard once it's all finished -->
 
-This ZMK configuration is Nix-based, and uses [zmk-nix][zmk-nix] (Thanks @lilyinstarlight for the awesome project).
+This ZMK configuration is Nix-based, and uses [zmk-nix][zmk-nix] (Thanks [@lilyinstarlight][@lilyinstarlight] for the awesome project).
 
 I used the awesome [Keymap Drawer](https://keymap-drawer.streamlit.app/) to generate a visualization of my layout below:
 ![my layout](./assets/my_keymap.svg)
@@ -11,3 +11,4 @@ I used the awesome [Keymap Drawer](https://keymap-drawer.streamlit.app/) to gene
 
 [ferris-sweep]: https://github.com/davidphilipbarr/Sweep
 [zmk-nix]: https://github.com/lilyinstarlight/zmk-nix
+[@lilyinstarlight]: https://github.com/lilyinstarlight
