@@ -15,10 +15,6 @@
 #define NAV 3
 #define NUM 4
 
-// define the row modifiers
-#define FRML(k1,k2,k3) &ht LCTRL k1  &ht LALT k2  &ht LCMD k3
-#define FRMR(k1,k2,k3) &ht RCMD k1  &ht RALT k2  &ht RCTRL k3
-
 // Configure the layer tap.
 &lt {
     // Setting quick-tap-ms will allow me to tap then hold the backspace key
@@ -67,7 +63,7 @@
             bindings = <
         //╭──────────┬──────────┬──────────┬──────────┬──────────╮   ╭──────────┬──────────┬──────────┬──────────┬──────────╮
         //│  Q       │  W       │  F       │  P       │  G       │   │  J       │  L       │  U       │  Y       │  ;       │
-            &kp Q      FRML(W,        F,         P)     &kp G          &kp J      FRMR(L,        U,         Y)     &kp SEMI
+            &kp Q    &ht LCTRL W &ht LALT F &ht LCMD P  &kp G          &kp J     &ht LCMD L &ht LALT U &ht LCTRL Y &kp SEMI
         //├──────────┼──────────┼──────────┼──────────┼──────────┤   ├──────────┼──────────┼──────────┼──────────┼──────────┤
         //│  A       │  R       │  S       │  T       │  D       │   │  H       │  N       │  E       │  I       │  O       │
             &kp A      &kp R      &kp S      &kp T      &kp D          &kp H      &kp N      &kp E      &kp I      &kp O
