@@ -17,12 +17,12 @@
       firmware = zmk-nix.legacyPackages.${system}.buildSplitKeyboard {
         name = "firmware";
 
-        src = nixpkgs.lib.sourceFilesBySuffices self [ ".conf" ".keymap" ".dtsi" ".yml" ];
+        src = nixpkgs.lib.sourceFilesBySuffices self [ ".board" ".cmake" ".conf" ".defconfig" ".dts" ".dtsi" ".json" ".keymap" ".overlay" ".shield" ".yml" "_defconfig" ];
 
         board = "nice_nano_v2";
         shield = "cradio_%PART%";
 
-        zephyrDepsHash = "sha256-PfnvDVdlH9e6qnVRDLsQKl9jURDJkYGk4pNPaFeT6/s=";
+        zephyrDepsHash = "sha256-3NucFKy7JJ7Iofkhvtxww6GOXCNPDwE35FgedEdqIJE=";
 
         meta = {
           description = "ZMK firmware";
