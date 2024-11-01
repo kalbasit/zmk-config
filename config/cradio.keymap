@@ -39,7 +39,7 @@
     conditional_layers {
         compatible = "zmk,conditional-layers";
         tri_layer {
-            if-layers = <SYM NAV>;
+            if-layers = <SYS NAV>;
             then-layer = <SYS_ADMIN>;
         };
     };
