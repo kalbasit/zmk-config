@@ -73,7 +73,7 @@
             bindings = <
         //╭──────────┬──────────┬──────────┬──────────┬──────────╮   ╭──────────┬──────────┬──────────┬──────────┬──────────╮
         //│  Q       │  W       │  F       │  P       │  G       │   │  J       │  L       │  U       │  Y       │  ;       │
-            &kp Q    &ht LCTRL W &ht LALT F &ht LCMD P  &kp G          &kp J     &ht LCMD L &ht LALT U &ht LCTRL Y &kp SEMI
+            &kp Q    &ht LCTRL W &ht LALT F &ht LCMD P  &kp G          &kp J     &ht RCMD L &ht RALT U &ht RCTRL Y &kp SEMI
         //├──────────┼──────────┼──────────┼──────────┼──────────┤   ├──────────┼──────────┼──────────┼──────────┼──────────┤
         //│  A       │  R       │  S       │  T       │  D       │   │  H       │  N       │  E       │  I       │  O       │
             &kp A      &kp R      &kp S      &kp T      &kp D          &kp H      &kp N      &kp E      &kp I      &kp O
