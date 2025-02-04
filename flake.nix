@@ -8,35 +8,55 @@
     };
   };
 
-  outputs = { self, nixpkgs, zmk-nix }: let
-    forAllSystems = nixpkgs.lib.genAttrs (nixpkgs.lib.attrNames zmk-nix.packages);
-  in {
-    packages = forAllSystems (system: rec {
-      default = firmware;
+  outputs =
+    {
+      self,
+      nixpkgs,
+      zmk-nix,
+    }:
+    let
+      forAllSystems = nixpkgs.lib.genAttrs (nixpkgs.lib.attrNames zmk-nix.packages);
+    in
+    {
+      packages = forAllSystems (system: rec {
+        default = firmware;
 
-      firmware = zmk-nix.legacyPackages.${system}.buildSplitKeyboard {
-        name = "firmware";
+        firmware = zmk-nix.legacyPackages.${system}.buildSplitKeyboard {
+          name = "firmware";
 
-        src = nixpkgs.lib.sourceFilesBySuffices self [ ".board" ".cmake" ".conf" ".defconfig" ".dts" ".dtsi" ".json" ".keymap" ".overlay" ".shield" ".yml" "_defconfig" ];
+          src = nixpkgs.lib.sourceFilesBySuffices self [
+            ".board"
+            ".cmake"
+            ".conf"
+            ".defconfig"
+            ".dts"
+            ".dtsi"
+            ".json"
+            ".keymap"
+            ".overlay"
+            ".shield"
+            ".yml"
+            "_defconfig"
+          ];
 
-        board = "nice_nano_v2";
-        shield = "cradio_%PART%";
+          board = "nice_nano_v2";
+          shield = "cradio_%PART%";
 
-        zephyrDepsHash = "sha256-YvzRxhwUR5bZqToXMwhfLp+ewxgiQHrSgPUVHBpnOA4=";
+          zephyrDepsHash = "sha256-YvzRxhwUR5bZqToXMwhfLp+ewxgiQHrSgPUVHBpnOA4=";
 
-        meta = {
-          description = "ZMK firmware";
-          license = nixpkgs.lib.licenses.mit;
-          platforms = nixpkgs.lib.platforms.all;
+          meta = {
+            description = "ZMK firmware";
+            license = nixpkgs.lib.licenses.mit;
+            platforms = nixpkgs.lib.platforms.all;
+          };
         };
-      };
 
-      flash = zmk-nix.packages.${system}.flash.override { inherit firmware; };
-      update = zmk-nix.packages.${system}.update;
-    });
+        flash = zmk-nix.packages.${system}.flash.override { inherit firmware; };
+        update = zmk-nix.packages.${system}.update;
+      });
 
-    devShells = forAllSystems (system: {
-      default = zmk-nix.devShells.${system}.default;
-    });
-  };
+      devShells = forAllSystems (system: {
+        default = zmk-nix.devShells.${system}.default;
+      });
+    };
 }
