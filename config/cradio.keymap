@@ -39,14 +39,12 @@
 
     conditional_layers {
         compatible = "zmk,conditional-layers";
+
         sys_admin_left {
             if-layers = <SYM SYS>;
             then-layer = <SYS_ADMIN>;
         };
-    };
 
-    conditional_layers {
-        compatible = "zmk,conditional-layers";
         sys_admin_right {
             if-layers = <NAV NUM>;
             then-layer = <SYS_ADMIN>;
