@@ -39,8 +39,14 @@
 
     conditional_layers {
         compatible = "zmk,conditional-layers";
-        tri_layer {
-            if-layers = <SYS NAV>;
+
+        sys_admin_left {
+            if-layers = <SYM SYS>;
+            then-layer = <SYS_ADMIN>;
+        };
+
+        sys_admin_right {
+            if-layers = <NAV NUM>;
             then-layer = <SYS_ADMIN>;
         };
     };
@@ -158,7 +164,7 @@
             bindings = <
         //╭──────────┬──────────┬──────────┬──────────┬──────────╮   ╭──────────┬──────────┬──────────┬──────────┬──────────╮
         //│          │          │          │          │          │   │          │          │          │          │          │
-            &trans     &trans     &trans     &trans     &trans         &trans     &trans     &trans     &trans     &trans
+            &trans     &trans     &trans     &trans    &bootloader    &bootloader &trans     &trans     &trans     &trans
         //├──────────┼──────────┼──────────┼──────────┼──────────┤   ├──────────┼──────────┼──────────┼──────────┼──────────┤
         //│          │          │          │          │          │   │          │          │          │          │          │
             &trans     &trans     &trans     &trans     &trans         &trans     &trans     &trans     &trans     &trans
