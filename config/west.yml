@@ -5,7 +5,7 @@ manifest:
   projects:
     - name: zmk
       remote: zmkfirmware
-      revision: 83eafcbf9b12226f1d0dbb30a77e6ddc332a4210  # main
+      revision: 118359c83efa0758144489fd5e12cc6f5bdbad4c  # main
       import: app/west.yml
     - name: zephyr
       remote: zmkfirmware
