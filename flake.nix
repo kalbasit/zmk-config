@@ -63,8 +63,13 @@
               name = "update-assets";
               runtimeInputs = [ nixpkgs.legacyPackages.${system}.keymap-drawer ];
               text = ''
-                # Get the directory where the script is run from (should be repo root)
-                REPO_ROOT="''${REPO_ROOT:-$(pwd)}"
+                # Get the repository root
+                REPO_ROOT="$(git rev-parse --show-toplevel)"
+
+                if [ -z "$REPO_ROOT" ]; then
+                    echo "Error: could not determine repository root. Are you in a git repository?" >&2
+                    exit 1
+                fi
 
                 # Parse the keymap to YAML, then draw the SVG
                 echo "Parsing keymap from config/cradio.keymap..."
