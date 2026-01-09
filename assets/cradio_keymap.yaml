@@ -157,19 +157,19 @@ layers:
     - {type: held}
     - {type: held}
   vscode:
-  - - Gui+P
-    - Gui+Sft+P
+  - - Ctl+`
+    - Gui+W
+    - Gui+F
+    - Gui+P
     - Gui+B
-    - Gui+J
-    - Gui+K
     - {t: ▽, type: trans}
     - Gui+Alt+LEFT
     - Sft+Alt+DOWN
     - Sft+Alt+UP
     - {t: Sft+Alt+RIGHT, type: held}
-  - - Ctl+`
-    - Gui+W
-    - Gui+Sft+T
+  - - Gui+Sft+P
+    - {t: ▽, type: trans}
+    - {t: ▽, type: trans}
     - Gui+T
     - Gui+D
     - {t: ▽, type: trans}
@@ -181,7 +181,7 @@ layers:
     - Gui+X
     - Gui+C
     - Gui+V
-    - Gui+F
+    - Gui+J
     - {t: ▽, type: trans}
     - Gui+Sft+LEFT
     - Gui+Sft+DOWN
