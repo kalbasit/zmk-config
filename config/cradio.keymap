@@ -181,14 +181,14 @@
         vscode_layer {
             bindings = <
         //╭──────────┬──────────┬──────────┬──────────┬──────────╮   ╭──────────┬──────────┬──────────┬──────────┬──────────╮
-        //│ Cmd+P    │ Cmd+Shft │ Cmd+B    │ Cmd+J    │ Cmd+K+V  │   │          │Cmd+Opt+← │Shft+Alt+↓│Shft+Alt+↑│Shft+Alt+→│
-          &kp LG(P) &kp LG(LS(P)) &kp LG(B) &kp LG(J) &kp LG(K)    &trans &kp LG(LA(LEFT)) &kp LS(LA(DOWN)) &kp LS(LA(UP)) &kp LS(LA(RIGHT))
+        //│ Ctrl+`   │ Cmd+W    │ Cmd+F    │ Cmd+P    │ Cmd+B    │   │          │Cmd+Opt+← │Shft+Alt+↓│Shft+Alt+↑│Shft+Alt+→│
+          &kp LC(GRAVE) &kp LG(W) &kp LG(F) &kp LG(P) &kp LG(B)    &trans &kp LG(LA(LEFT)) &kp LS(LA(DOWN)) &kp LS(LA(UP)) &kp LS(LA(RIGHT))
         //├──────────┼──────────┼──────────┼──────────┼──────────┤   ├──────────┼──────────┼──────────┼──────────┼──────────┤
-        //│ Ctrl+`   │ Cmd+W    │ Cmd+Shft │ Cmd+T    │ Cmd+D    │   │          │ Cmd+←    │ Cmd+↓    │ Cmd+↑    │ Cmd+→    │
-          &kp LC(GRAVE) &kp LG(W) &kp LG(LS(T)) &kp LG(T) &kp LG(D)  &trans &kp LG(LEFT) &kp LG(DOWN) &kp LG(UP) &kp LG(RIGHT)
+        //│Cmd+Shft+P│          │          │ Cmd+T    │ Cmd+D    │   │          │ Cmd+←    │ Cmd+↓    │ Cmd+↑    │ Cmd+→    │
+          &kp LG(LS(P)) &trans &trans &kp LG(T) &kp LG(D)  &trans &kp LG(LEFT) &kp LG(DOWN) &kp LG(UP) &kp LG(RIGHT)
         //├──────────┼──────────┼──────────┼──────────┼──────────┤   ├──────────┼──────────┼──────────┼──────────┼──────────┤
-        //│ Cmd+/    │ Cmd+X    │ Cmd+C    │ Cmd+V    │ Cmd+F    │   │          │Cmd+Shft+←│Cmd+Shft+↓│Cmd+Shft+↑│Cmd+Shft+→│
-          &kp LG(FSLH) &kp LG(X) &kp LG(C) &kp LG(V) &kp LG(F)     &trans &kp LG(LS(LEFT)) &kp LG(LS(DOWN)) &kp LG(LS(UP)) &kp LG(LS(RIGHT))
+        //│ Cmd+/    │ Cmd+X    │ Cmd+C    │ Cmd+V    │ Cmd+J    │   │          │Cmd+Shft+←│Cmd+Shft+↓│Cmd+Shft+↑│Cmd+Shft+→│
+          &kp LG(FSLH) &kp LG(X) &kp LG(C) &kp LG(V) &kp LG(J)     &trans &kp LG(LS(LEFT)) &kp LG(LS(DOWN)) &kp LG(LS(UP)) &kp LG(LS(RIGHT))
         //╰──────────┴──────────┴──────────┼──────────┼──────────┤   ├──────────┼──────────┼──────────┴──────────┴──────────╯
                                              &trans     &trans         &trans     &trans
         //                                 ╰──────────┴──────────╯   ╰──────────┴──────────╯
