@@ -1,0 +1,22 @@
+name: Auto Update Assets
+on:
+  pull_request:
+    branches:
+      - main
+jobs:
+  update-assets:
+    if: github.event.pull_request.head.repo.fork == false
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          token: ${{ secrets.GHA_PAT_TOKEN }}
+          ref: ${{ github.event.pull_request.head.ref }}
+          repository: ${{ github.event.pull_request.head.repo.full_name }}
+      - uses: DeterminateSystems/nix-installer-action@v21
+      - uses: DeterminateSystems/magic-nix-cache-action@v13
+      - name: Update assets
+        run: nix run .#update-assets
+      - uses: stefanzweifel/git-auto-commit-action@v7
+        with:
+          commit_message: "Auto Update Assets"
