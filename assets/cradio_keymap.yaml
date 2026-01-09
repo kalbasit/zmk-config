@@ -88,7 +88,7 @@ layers:
     - HOME
     - PG DN
     - PG UP
-    - END
+    - {t: END, h: vscode}
   - - TAB
     - '&mmv MOVE_LEFT'
     - '&mmv MOVE_DOWN'
@@ -156,3 +156,38 @@ layers:
     - {t: ▽, type: trans}
     - {type: held}
     - {type: held}
+  vscode:
+  - - Gui+P
+    - Gui+Sft+P
+    - Gui+B
+    - Gui+J
+    - Gui+K
+    - {t: ▽, type: trans}
+    - Gui+Alt+LEFT
+    - Sft+Alt+DOWN
+    - Sft+Alt+UP
+    - {t: Sft+Alt+RIGHT, type: held}
+  - - Ctl+`
+    - Gui+W
+    - Gui+Sft+T
+    - Gui+T
+    - Gui+D
+    - {t: ▽, type: trans}
+    - Gui+LEFT
+    - Gui+DOWN
+    - Gui+UP
+    - Gui+RIGHT
+  - - Gui+/
+    - Gui+X
+    - Gui+C
+    - Gui+V
+    - Gui+F
+    - {t: ▽, type: trans}
+    - Gui+Sft+LEFT
+    - Gui+Sft+DOWN
+    - Gui+Sft+UP
+    - Gui+Sft+RIGHT
+  - - {t: ▽, type: trans}
+    - {t: ▽, type: trans}
+    - {type: held}
+    - {t: ▽, type: trans}
