@@ -1,6 +1,6 @@
 {
   inputs = {
-    nixpkgs.url = "github:NixOS/nixpkgs/release-25.11";
+    nixpkgs.url = "github:NixOS/nixpkgs/release-25.05";
 
     zmk-nix = {
       url = "github:lilyinstarlight/zmk-nix";
@@ -42,7 +42,7 @@
           board = "nice_nano_v2";
           shield = "cradio_%PART%";
 
-          zephyrDepsHash = "sha256-rffVRMRUfi9/H8zQR+6j8Wl3lp0K6fUBir4evRuhXRI=";
+          zephyrDepsHash = "sha256-IGyYY6MzYoHzVRlYioVy84GRH7ZN5uyQcarJIo5oHiQ=";
 
           meta = {
             description = "ZMK firmware";
