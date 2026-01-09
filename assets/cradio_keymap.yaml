@@ -1,0 +1,158 @@
+layout: {zmk_keyboard: cradio}
+layers:
+  colemak:
+  - - Q
+    - {t: W, h: LCTRL}
+    - {t: F, h: LALT}
+    - {t: P, h: LCMD}
+    - G
+    - J
+    - {t: L, h: RCMD}
+    - {t: U, h: RALT}
+    - {t: Y, h: RCTRL}
+    - ;
+  - [A, R, S, T, D, H, N, E, I, O]
+  - - {t: Z, h: LSHFT}
+    - X
+    - C
+    - V
+    - B
+    - K
+    - M
+    - ','
+    - .
+    - {t: /, h: RSHFT}
+  - - {t: BSPC, h: symbols}
+    - {t: SPACE, h: system}
+    - {t: ENTER, h: navigation}
+    - numbers
+  symbols:
+  - ['!', '@', '#', $, '%', ^, '&', '*', _, +]
+  - ['''', '[', '{', (, '`', '~', ), '}', ']', '"']
+  - - {t: ▽, type: trans}
+    - {t: ▽, type: trans}
+    - {t: ▽, type: trans}
+    - {t: ▽, type: trans}
+    - {t: ▽, type: trans}
+    - {t: ▽, type: trans}
+    - '-'
+    - '='
+    - \
+    - '|'
+  - - {type: held}
+    - {t: ▽, type: trans}
+    - {t: ▽, type: trans}
+    - {t: ▽, type: trans}
+  system:
+  - - {t: ▽, type: trans}
+    - {t: ▽, type: trans}
+    - {t: ▽, type: trans}
+    - {t: ▽, type: trans}
+    - {t: ▽, type: trans}
+    - {t: ▽, type: trans}
+    - {t: ▽, type: trans}
+    - {t: ▽, type: trans}
+    - {t: ▽, type: trans}
+    - {t: ▽, type: trans}
+  - - {t: BT, h: '0'}
+    - {t: BT, h: '1'}
+    - {t: BT, h: '2'}
+    - {t: BT, h: '3'}
+    - {t: ▽, type: trans}
+    - {t: ▽, type: trans}
+    - {t: ▽, type: trans}
+    - {t: ▽, type: trans}
+    - {t: ▽, type: trans}
+    - OUT TOG
+  - - {t: ▽, type: trans}
+    - {t: ▽, type: trans}
+    - {t: ▽, type: trans}
+    - {t: ▽, type: trans}
+    - {t: ▽, type: trans}
+    - {t: ▽, type: trans}
+    - {t: ▽, type: trans}
+    - {t: ▽, type: trans}
+    - {t: ▽, type: trans}
+    - {t: ▽, type: trans}
+  - - {t: ▽, type: trans}
+    - {type: held}
+    - {t: ▽, type: trans}
+    - {t: ▽, type: trans}
+  navigation:
+  - - ESC
+    - '&msc MOVE_RIGHT'
+    - '&mmv MOVE_UP'
+    - '&msc MOVE_LEFT'
+    - '&msc MOVE_DOWN'
+    - {t: ▽, type: trans}
+    - HOME
+    - PG DN
+    - PG UP
+    - END
+  - - TAB
+    - '&mmv MOVE_LEFT'
+    - '&mmv MOVE_DOWN'
+    - '&mmv MOVE_RIGHT'
+    - '&msc MOVE_UP'
+    - {t: ▽, type: trans}
+    - LEFT
+    - DOWN
+    - UP
+    - RIGHT
+  - - '&caps_word'
+    - PREV
+    - PP
+    - NEXT
+    - {t: ▽, type: trans}
+    - {t: ▽, type: trans}
+    - VOL DN
+    - VOL UP
+    - MUTE
+    - {t: ▽, type: trans}
+  - - '&mkp MB1'
+    - '&mkp MB2'
+    - {type: held}
+    - {t: ▽, type: trans}
+  numbers:
+  - [F1, F2, F3, F4, F5, F6, F7, F8, F9, F10]
+  - ['1', '2', '3', '4', '5', '6', '7', '8', '9', '0']
+  - [F11, F12, F13, F14, F15, F16, F17, F18, F19, F20]
+  - - {t: ▽, type: trans}
+    - {t: ▽, type: trans}
+    - {t: ▽, type: trans}
+    - {type: held}
+  system_admin:
+  - - {t: BT DISC, h: '0'}
+    - {t: BT DISC, h: '1'}
+    - {t: BT DISC, h: '2'}
+    - {t: ▽, type: trans}
+    - '&bootloader'
+    - '&bootloader'
+    - {t: ▽, type: trans}
+    - {t: ▽, type: trans}
+    - {t: ▽, type: trans}
+    - {t: ▽, type: trans}
+  - - {t: ▽, type: trans}
+    - {t: ▽, type: trans}
+    - {t: ▽, type: trans}
+    - {t: ▽, type: trans}
+    - {t: ▽, type: trans}
+    - {t: ▽, type: trans}
+    - {t: ▽, type: trans}
+    - {t: ▽, type: trans}
+    - {t: ▽, type: trans}
+    - {t: ▽, type: trans}
+  - - {t: ▽, type: trans}
+    - BT CLR
+    - BT CLR ALL
+    - {t: ▽, type: trans}
+    - {t: ▽, type: trans}
+    - {t: ▽, type: trans}
+    - {t: ▽, type: trans}
+    - {t: ▽, type: trans}
+    - {t: ▽, type: trans}
+    - {t: ▽, type: trans}
+  - - {t: ▽, type: trans}
+    - {t: ▽, type: trans}
+    - {type: held}
+    - {type: held}

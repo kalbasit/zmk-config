@@ -55,6 +55,31 @@
         update = zmk-nix.packages.${system}.update;
       });
 
+      apps = forAllSystems (system: {
+        update-assets = {
+          type = "app";
+          program = "${
+            nixpkgs.legacyPackages.${system}.writeShellApplication {
+              name = "update-assets";
+              runtimeInputs = [ nixpkgs.legacyPackages.${system}.keymap-drawer ];
+              text = ''
+                # Get the directory where the script is run from (should be repo root)
+                REPO_ROOT="''${REPO_ROOT:-$(pwd)}"
+
+                # Parse the keymap to YAML, then draw the SVG
+                echo "Parsing keymap from config/cradio.keymap..."
+                keymap parse -c 10 -z "''${REPO_ROOT}/config/cradio.keymap" -o "''${REPO_ROOT}/assets/cradio_keymap.yaml"
+
+                echo "Generating SVG from parsed keymap..."
+                keymap draw "''${REPO_ROOT}/assets/cradio_keymap.yaml" -o "''${REPO_ROOT}/assets/my_keymap.svg"
+
+                echo "Successfully updated assets/my_keymap.svg!"
+              '';
+            }
+          }/bin/update-assets";
+        };
+      });
+
       devShells = forAllSystems (system: {
         default = zmk-nix.devShells.${system}.default;
       });
