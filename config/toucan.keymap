@@ -10,11 +10,14 @@
 #include <dt-bindings/zmk/pointing.h>
 
 // define layers
+// SYM=1 and NUM=2 intentionally match the toucan shield's hardcoded
+// glidepoint_listener scroller `layers = <1 2>`, so holding either
+// thumb layer converts trackpad movement to scroll — no overlay needed.
 #define COLEMAK   0
 #define SYM       1
-#define SYS       2
-#define NAV       3
-#define NUM       4
+#define NUM       2
+#define SYS       3
+#define NAV       4
 #define SYS_ADMIN 5
 
 // Configure the layer tap — quick-tap-ms lets tap-then-hold repeat (e.g. backspace).
@@ -75,8 +78,8 @@
         //│ (none) │  Z/SHIFT │  X         │  C       │  V       │  B       │   │  K       │  M       │  ,       │  .         │  //SHIFT │ (none) │
             &none  &ht LSHFT Z  &kp X        &kp C      &kp V      &kp B          &kp K    &kp M    &kp COMMA    &kp DOT   &ht RSHFT FSLH  &none
         //╰────────┴──────────┴────────────┼──────────┼──────────┼──────────┤   ├──────────┼──────────┼──────────┼────────────┴──────────┴────────╯
-        //                                 │ SYM/BSPC │ SYS/SPC  │  (none)  │   │  (none)  │ NAV/RET  │  NUM     │
-                                          &lt SYM BSPC &lt SYS SPACE &trans       &trans  &lt NAV RET  &mo NUM
+        //                                 │  (none)  │ SYM/BSPC │ SYS/SPC  │   │ NAV/RET  │  NUM     │  (none)  │
+                                           &trans  &lt SYM BSPC &lt SYS SPACE   &lt NAV RET  &mo NUM   &trans
         //                                 ╰──────────┴──────────┴──────────╯   ╰──────────┴──────────┴──────────╯
             >;
         };
