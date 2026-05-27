@@ -38,7 +38,7 @@
             shield = "cradio_%PART%";
             # Run `nix build .#cradio.firmware` to get the actual hash after
             # any west.yml change.
-            zephyrDepsHash = "sha256-IGyYY6MzYoHzVRlYioVy84GRH7ZN5uyQcarJIo5oHiQ=";
+            zephyrDepsHash = "sha256-gSI7pjinegAZrSgezz1JTkXrCHr2wr7a7F6UAP7OM9g=";
             meta = {
               description = "ZMK firmware for Cradio (Sweep)";
               license = nixpkgs.lib.licenses.mit;
@@ -105,7 +105,8 @@
         };
       });
 
-      devShells = forAllSystems (system:
+      devShells = forAllSystems (
+        system:
         let
           pkgs = nixpkgs.legacyPackages.${system};
           # canopen has flaky timing tests on macOS that cause the build to fail.
@@ -114,12 +115,15 @@
           # zmk-nix's own pkgs and cannot be retroactively patched via overlays.
           python3 = pkgs.python3.override {
             packageOverrides = _: prev: {
-              canopen = prev.canopen.overridePythonAttrs (_: { doCheck = false; });
+              canopen = prev.canopen.overridePythonAttrs (_: {
+                doCheck = false;
+              });
             };
           };
         in
         {
           default = pkgs.callPackage "${zmk-nix}/nix/shell.nix" { inherit python3; };
-        });
+        }
+      );
     };
 }
