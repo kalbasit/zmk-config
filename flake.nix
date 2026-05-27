@@ -127,9 +127,11 @@
                 keymap parse -c 12 -z "''${REPO_ROOT}/config/toucan.keymap" \
                     -o "''${REPO_ROOT}/assets/toucan_keymap.yaml"
                 # toucan isn't in keymap-drawer's ZMK keyboard database;
-                # replace the layout with an ortho specification matching
-                # the 36-key Toucan (3 rows × 6 cols per side + 3 thumbs per side).
-                yq -i '.layout = {"ortho_layout": {"split": true, "rows": 3, "columns": 6, "thumbs": 3}}' \
+                # use the Corne layout (crkbd) which has the same physical shape:
+                # 6-col column-stagger + 3 thumbs per side = 42 positions.
+                # Outer-column keys (RC(r,0) / RC(r,11)) are &none in our keymap
+                # and will render as blank keys, which is correct for the Toucan 36.
+                yq -i '.layout = {"zmk_keyboard": "corne"}' \
                     "''${REPO_ROOT}/assets/toucan_keymap.yaml"
                 echo "Drawing toucan SVG..."
                 keymap draw "''${REPO_ROOT}/assets/toucan_keymap.yaml" \

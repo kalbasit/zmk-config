@@ -1,4 +1,4 @@
-layout: {ortho_layout: {split: true, rows: 3, columns: 6, thumbs: 3}}
+layout: {zmk_keyboard: corne}
 layers:
   COLEMAK:
     - - ''
