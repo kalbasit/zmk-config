@@ -101,7 +101,10 @@
           program = "${
             nixpkgs.legacyPackages.${system}.writeShellApplication {
               name = "update-assets";
-              runtimeInputs = [ nixpkgs.legacyPackages.${system}.keymap-drawer ];
+              runtimeInputs = [
+                nixpkgs.legacyPackages.${system}.keymap-drawer
+                nixpkgs.legacyPackages.${system}.yq-go
+              ];
               text = ''
                 # Get the repository root
                 REPO_ROOT="$(git rev-parse --show-toplevel)"
@@ -111,14 +114,34 @@
                     exit 1
                 fi
 
-                # Parse the keymap to YAML, then draw the SVG
-                echo "Parsing keymap from config/cradio.keymap..."
-                keymap parse -c 10 -z "''${REPO_ROOT}/config/cradio.keymap" -o "''${REPO_ROOT}/assets/cradio_keymap.yaml"
+                # ── Cradio ────────────────────────────────────────────────────
+                echo "Parsing cradio keymap..."
+                keymap parse -c 10 -z "''${REPO_ROOT}/config/cradio.keymap" \
+                    -o "''${REPO_ROOT}/assets/cradio_keymap.yaml"
+                echo "Drawing cradio SVG..."
+                keymap draw "''${REPO_ROOT}/assets/cradio_keymap.yaml" \
+                    -o "''${REPO_ROOT}/assets/cradio_keymap.svg"
 
-                echo "Generating SVG from parsed keymap..."
-                keymap draw "''${REPO_ROOT}/assets/cradio_keymap.yaml" -o "''${REPO_ROOT}/assets/my_keymap.svg"
+                # ── Toucan ────────────────────────────────────────────────────
+                echo "Parsing toucan keymap..."
+                keymap parse -c 12 -z "''${REPO_ROOT}/config/toucan.keymap" \
+                    -o "''${REPO_ROOT}/assets/toucan_keymap.yaml"
+                # toucan isn't in keymap-drawer's ZMK keyboard database.
+                # Parse emits 42 positions (12-col matrix): 3 main rows of 12 + 1
+                # thumb row of 6. Strip outer columns from main rows (.[0] and .[-1]
+                # per row) to get 10 per row, then use crkbd LAYOUT_split_3x5_3
+                # (5-col corne, 36 keys) so keymap-drawer uses the correct column-
+                # stagger and 1u thumb keys. Thumb row keeps all 6 positions
+                # (outermost thumbs are &none = blank keys, which is correct).
+                yq -i '.layers[] |= [.[0][1:-1], .[1][1:-1], .[2][1:-1], .[3]]' \
+                    "''${REPO_ROOT}/assets/toucan_keymap.yaml"
+                yq -i '.layout = {"qmk_keyboard": "corne_rotated", "layout_name": "LAYOUT_split_3x5_3"}' \
+                    "''${REPO_ROOT}/assets/toucan_keymap.yaml"
+                echo "Drawing toucan SVG..."
+                keymap draw "''${REPO_ROOT}/assets/toucan_keymap.yaml" \
+                    -o "''${REPO_ROOT}/assets/toucan_keymap.svg"
 
-                echo "Successfully updated assets/my_keymap.svg!"
+                echo "Done — assets/cradio_keymap.svg and assets/toucan_keymap.svg updated."
               '';
             }
           }/bin/update-assets";
