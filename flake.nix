@@ -126,12 +126,16 @@
                 echo "Parsing toucan keymap..."
                 keymap parse -c 12 -z "''${REPO_ROOT}/config/toucan.keymap" \
                     -o "''${REPO_ROOT}/assets/toucan_keymap.yaml"
-                # toucan isn't in keymap-drawer's ZMK keyboard database;
-                # use the Corne layout (crkbd) which has the same physical shape:
-                # 6-col column-stagger + 3 thumbs per side = 42 positions.
-                # Outer-column keys (RC(r,0) / RC(r,11)) are &none in our keymap
-                # and will render as blank keys, which is correct for the Toucan 36.
-                yq -i '.layout = {"zmk_keyboard": "corne"}' \
+                # toucan isn't in keymap-drawer's ZMK keyboard database.
+                # Parse emits 42 positions (12-col matrix): 3 main rows of 12 + 1
+                # thumb row of 6. Strip outer columns from main rows (.[0] and .[-1]
+                # per row) to get 10 per row, then use crkbd LAYOUT_split_3x5_3
+                # (5-col corne, 36 keys) so keymap-drawer uses the correct column-
+                # stagger and 1u thumb keys. Thumb row keeps all 6 positions
+                # (outermost thumbs are &none = blank keys, which is correct).
+                yq -i '.layers[] |= [.[0][1:-1], .[1][1:-1], .[2][1:-1], .[3]]' \
+                    "''${REPO_ROOT}/assets/toucan_keymap.yaml"
+                yq -i '.layout = {"qmk_keyboard": "corne_rotated", "layout_name": "LAYOUT_split_3x5_3"}' \
                     "''${REPO_ROOT}/assets/toucan_keymap.yaml"
                 echo "Drawing toucan SVG..."
                 keymap draw "''${REPO_ROOT}/assets/toucan_keymap.yaml" \

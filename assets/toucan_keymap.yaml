@@ -1,8 +1,7 @@
-layout: {zmk_keyboard: corne}
+layout: {qmk_keyboard: corne_rotated, layout_name: LAYOUT_split_3x5_3}
 layers:
   COLEMAK:
-    - - ''
-      - Q
+    - - Q
       - {t: W, h: LCTRL}
       - {t: F, h: LALT}
       - {t: P, h: LCMD}
@@ -12,10 +11,17 @@ layers:
       - {t: U, h: RALT}
       - {t: Y, h: RCTRL}
       - ;
-      - ''
-    - ['', A, R, S, T, D, H, N, E, I, O, '']
-    - - ''
-      - {t: Z, h: LSHFT}
+    - - A
+      - R
+      - S
+      - T
+      - D
+      - H
+      - N
+      - E
+      - I
+      - O
+    - - {t: Z, h: LSHFT}
       - X
       - C
       - V
@@ -25,7 +31,6 @@ layers:
       - ','
       - .
       - {t: /, h: RSHFT}
-      - ''
     - - ''
       - {t: BSPC, h: SYM}
       - {t: SPACE, h: SYS}
@@ -33,8 +38,7 @@ layers:
       - NUM
       - ''
   SYM:
-    - - {t: ▽, type: trans}
-      - '!'
+    - - '!'
       - '@'
       - '#'
       - $
@@ -44,9 +48,7 @@ layers:
       - '*'
       - _
       - +
-      - {t: ▽, type: trans}
-    - - {t: ▽, type: trans}
-      - ''''
+    - - ''''
       - '['
       - '{'
       - (
@@ -56,9 +58,7 @@ layers:
       - '}'
       - ']'
       - '"'
-      - {t: ▽, type: trans}
     - - {t: ▽, type: trans}
-      - {t: ▽, type: trans}
       - {t: ▽, type: trans}
       - {t: ▽, type: trans}
       - {t: ▽, type: trans}
@@ -68,7 +68,6 @@ layers:
       - '='
       - \
       - '|'
-      - {t: ▽, type: trans}
     - - ''
       - {type: held}
       - {t: ▽, type: trans}
@@ -76,8 +75,7 @@ layers:
       - {t: ▽, type: trans}
       - ''
   NUM:
-    - - {t: ▽, type: trans}
-      - F1
+    - - F1
       - F2
       - F3
       - F4
@@ -87,9 +85,7 @@ layers:
       - F8
       - F9
       - F10
-      - {t: ▽, type: trans}
-    - - {t: ▽, type: trans}
-      - '1'
+    - - '1'
       - '2'
       - '3'
       - '4'
@@ -99,9 +95,7 @@ layers:
       - '8'
       - '9'
       - '0'
-      - {t: ▽, type: trans}
-    - - {t: ▽, type: trans}
-      - F11
+    - - F11
       - F12
       - F13
       - F14
@@ -111,7 +105,6 @@ layers:
       - F18
       - F19
       - F20
-      - {t: ▽, type: trans}
     - - ''
       - {t: ▽, type: trans}
       - {t: ▽, type: trans}
@@ -129,10 +122,7 @@ layers:
       - {t: ▽, type: trans}
       - {t: ▽, type: trans}
       - {t: ▽, type: trans}
-      - {t: ▽, type: trans}
-      - {t: ▽, type: trans}
-    - - {t: ▽, type: trans}
-      - {t: BT, h: '0'}
+    - - {t: BT, h: '0'}
       - {t: BT, h: '1'}
       - {t: BT, h: '2'}
       - {t: BT, h: '3'}
@@ -142,10 +132,7 @@ layers:
       - {t: ▽, type: trans}
       - {t: ▽, type: trans}
       - OUT TOG
-      - {t: ▽, type: trans}
     - - {t: ▽, type: trans}
-      - {t: ▽, type: trans}
-      - {t: ▽, type: trans}
       - {t: ▽, type: trans}
       - {t: ▽, type: trans}
       - {t: ▽, type: trans}
@@ -162,8 +149,7 @@ layers:
       - {t: ▽, type: trans}
       - ''
   NAV:
-    - - {t: ▽, type: trans}
-      - ESC
+    - - ESC
       - '&msc MOVE_RIGHT'
       - '&mmv MOVE_UP'
       - '&msc MOVE_LEFT'
@@ -173,9 +159,7 @@ layers:
       - PG DN
       - PG UP
       - END
-      - {t: ▽, type: trans}
-    - - {t: ▽, type: trans}
-      - TAB
+    - - TAB
       - '&mmv MOVE_LEFT'
       - '&mmv MOVE_DOWN'
       - '&mmv MOVE_RIGHT'
@@ -185,9 +169,7 @@ layers:
       - DOWN
       - UP
       - RIGHT
-      - {t: ▽, type: trans}
-    - - {t: ▽, type: trans}
-      - '&caps_word'
+    - - '&caps_word'
       - PREV
       - PP
       - NEXT
@@ -197,7 +179,6 @@ layers:
       - VOL UP
       - MUTE
       - {t: ▽, type: trans}
-      - {t: ▽, type: trans}
     - - ''
       - '&mkp MB1'
       - '&mkp MB2'
@@ -205,8 +186,7 @@ layers:
       - {t: ▽, type: trans}
       - ''
   SYSADM:
-    - - {t: ▽, type: trans}
-      - {t: BT DISC, h: '0'}
+    - - {t: BT DISC, h: '0'}
       - {t: BT DISC, h: '1'}
       - {t: BT DISC, h: '2'}
       - {t: ▽, type: trans}
@@ -216,7 +196,6 @@ layers:
       - {t: ▽, type: trans}
       - {t: ▽, type: trans}
       - {t: ▽, type: trans}
-      - {t: ▽, type: trans}
     - - {t: ▽, type: trans}
       - {t: ▽, type: trans}
       - {t: ▽, type: trans}
@@ -227,13 +206,9 @@ layers:
       - {t: ▽, type: trans}
       - {t: ▽, type: trans}
       - {t: ▽, type: trans}
-      - {t: ▽, type: trans}
-      - {t: ▽, type: trans}
     - - {t: ▽, type: trans}
-      - {t: ▽, type: trans}
       - BT CLR
       - BT CLR ALL
-      - {t: ▽, type: trans}
       - {t: ▽, type: trans}
       - {t: ▽, type: trans}
       - {t: ▽, type: trans}
