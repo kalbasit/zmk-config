@@ -101,7 +101,10 @@
           program = "${
             nixpkgs.legacyPackages.${system}.writeShellApplication {
               name = "update-assets";
-              runtimeInputs = [ nixpkgs.legacyPackages.${system}.keymap-drawer ];
+              runtimeInputs = [
+                nixpkgs.legacyPackages.${system}.keymap-drawer
+                nixpkgs.legacyPackages.${system}.yq-go
+              ];
               text = ''
                 # Get the repository root
                 REPO_ROOT="$(git rev-parse --show-toplevel)"
@@ -111,14 +114,28 @@
                     exit 1
                 fi
 
-                # Parse the keymap to YAML, then draw the SVG
-                echo "Parsing keymap from config/cradio.keymap..."
-                keymap parse -c 10 -z "''${REPO_ROOT}/config/cradio.keymap" -o "''${REPO_ROOT}/assets/cradio_keymap.yaml"
+                # ── Cradio ────────────────────────────────────────────────────
+                echo "Parsing cradio keymap..."
+                keymap parse -c 10 -z "''${REPO_ROOT}/config/cradio.keymap" \
+                    -o "''${REPO_ROOT}/assets/cradio_keymap.yaml"
+                echo "Drawing cradio SVG..."
+                keymap draw "''${REPO_ROOT}/assets/cradio_keymap.yaml" \
+                    -o "''${REPO_ROOT}/assets/cradio_keymap.svg"
 
-                echo "Generating SVG from parsed keymap..."
-                keymap draw "''${REPO_ROOT}/assets/cradio_keymap.yaml" -o "''${REPO_ROOT}/assets/my_keymap.svg"
+                # ── Toucan ────────────────────────────────────────────────────
+                echo "Parsing toucan keymap..."
+                keymap parse -c 12 -z "''${REPO_ROOT}/config/toucan.keymap" \
+                    -o "''${REPO_ROOT}/assets/toucan_keymap.yaml"
+                # toucan isn't in keymap-drawer's ZMK keyboard database;
+                # replace the layout with an ortho specification matching
+                # the 36-key Toucan (3 rows × 6 cols per side + 3 thumbs per side).
+                yq -i '.layout = {"ortho_layout": {"split": true, "rows": 3, "columns": 6, "thumbs": 3}}' \
+                    "''${REPO_ROOT}/assets/toucan_keymap.yaml"
+                echo "Drawing toucan SVG..."
+                keymap draw "''${REPO_ROOT}/assets/toucan_keymap.yaml" \
+                    -o "''${REPO_ROOT}/assets/toucan_keymap.svg"
 
-                echo "Successfully updated assets/my_keymap.svg!"
+                echo "Done — assets/cradio_keymap.svg and assets/toucan_keymap.svg updated."
               '';
             }
           }/bin/update-assets";
