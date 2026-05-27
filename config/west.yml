@@ -2,8 +2,8 @@ manifest:
   remotes:
     - name: zmkfirmware
       url-base: https://github.com/zmkfirmware
-    - name: kalbasit
-      url-base: https://github.com/kalbasit
+    - name: beekeeb
+      url-base: https://github.com/beekeeb
     - name: caksoylar
       url-base: https://github.com/caksoylar
     - name: geeksville
@@ -38,7 +38,7 @@ manifest:
           - trusted-firmware-m
     # Toucan keyboard shield definitions
     - name: zmk-keyboard-toucan
-      remote: kalbasit
+      remote: beekeeb
       revision: cc9e67ac1993bb8795a37e713dcfbdb93b9677dd  # main
     # Cirque trackpad input module (toucan-specific branch)
     - name: cirque-input-module
