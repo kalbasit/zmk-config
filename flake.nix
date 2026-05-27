@@ -1,20 +1,16 @@
 {
   inputs = {
-    nixpkgs.url = "github:NixOS/nixpkgs/release-25.11";
-
-    zmk-nix = {
-      url = "github:lilyinstarlight/zmk-nix";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
+    zmk-nix.url = "github:lilyinstarlight/zmk-nix";
   };
 
   outputs =
     {
       self,
-      nixpkgs,
       zmk-nix,
     }:
     let
+      inherit (zmk-nix.inputs) nixpkgs;
+
       forAllSystems = nixpkgs.lib.genAttrs (nixpkgs.lib.attrNames zmk-nix.packages);
     in
     {
@@ -85,8 +81,21 @@
         };
       });
 
-      devShells = forAllSystems (system: {
-        default = zmk-nix.devShells.${system}.default;
-      });
+      devShells = forAllSystems (system:
+        let
+          pkgs = nixpkgs.legacyPackages.${system};
+          # canopen has flaky timing tests on macOS that cause the build to fail.
+          # We inject a patched python3 via shell.nix's callPackage arg instead of
+          # using zmk-nix.devShells directly, since that is pre-evaluated with
+          # zmk-nix's own pkgs and cannot be retroactively patched via overlays.
+          python3 = pkgs.python3.override {
+            packageOverrides = _: prev: {
+              canopen = prev.canopen.overridePythonAttrs (_: { doCheck = false; });
+            };
+          };
+        in
+        {
+          default = pkgs.callPackage "${zmk-nix}/nix/shell.nix" { inherit python3; };
+        });
     };
 }
