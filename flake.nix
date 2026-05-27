@@ -12,44 +12,71 @@
       inherit (zmk-nix.inputs) nixpkgs;
 
       forAllSystems = nixpkgs.lib.genAttrs (nixpkgs.lib.attrNames zmk-nix.packages);
+
+      src = nixpkgs.lib.sourceFilesBySuffices self [
+        ".board"
+        ".cmake"
+        ".conf"
+        ".defconfig"
+        ".dts"
+        ".dtsi"
+        ".json"
+        ".keymap"
+        ".overlay"
+        ".shield"
+        ".yml"
+        "_defconfig"
+      ];
     in
     {
-      packages = forAllSystems (system: rec {
-        default = firmware;
-
-        firmware = zmk-nix.legacyPackages.${system}.buildSplitKeyboard {
-          name = "firmware";
-
-          src = nixpkgs.lib.sourceFilesBySuffices self [
-            ".board"
-            ".cmake"
-            ".conf"
-            ".defconfig"
-            ".dts"
-            ".dtsi"
-            ".json"
-            ".keymap"
-            ".overlay"
-            ".shield"
-            ".yml"
-            "_defconfig"
-          ];
-
-          board = "nice_nano_v2";
-          shield = "cradio_%PART%";
-
-          zephyrDepsHash = "sha256-IGyYY6MzYoHzVRlYioVy84GRH7ZN5uyQcarJIo5oHiQ=";
-
-          meta = {
-            description = "ZMK firmware";
-            license = nixpkgs.lib.licenses.mit;
-            platforms = nixpkgs.lib.platforms.all;
+      packages = forAllSystems (
+        system:
+        let
+          cradio = rec {
+            firmware = zmk-nix.legacyPackages.${system}.buildSplitKeyboard {
+              name = "cradio-firmware";
+              inherit src;
+              board = "nice_nano_v2";
+              shield = "cradio_%PART%";
+              # Run `nix build .#cradio.firmware` to get the actual hash after
+              # any west.yml change.
+              zephyrDepsHash = "sha256-IGyYY6MzYoHzVRlYioVy84GRH7ZN5uyQcarJIo5oHiQ=";
+              meta = {
+                description = "ZMK firmware for Cradio (Sweep)";
+                license = nixpkgs.lib.licenses.mit;
+                platforms = nixpkgs.lib.platforms.all;
+              };
+            };
+            flash = zmk-nix.packages.${system}.flash.override { inherit firmware; };
           };
-        };
 
-        flash = zmk-nix.packages.${system}.flash.override { inherit firmware; };
-        update = zmk-nix.packages.${system}.update;
-      });
+          toucan = rec {
+            firmware = zmk-nix.legacyPackages.${system}.buildSplitKeyboard {
+              name = "toucan-firmware";
+              inherit src;
+              board = "seeeduino_xiao_ble";
+              # Left: toucan_left + rgbled_adapter + nice_view_gem
+              # Right: toucan_right + rgbled_adapter (nice_view_gem compiled
+              # in but harmless — right has no display header).
+              shield = "toucan_%PART% rgbled_adapter nice_view_gem";
+              # Placeholder — run `nix build .#toucan.firmware` to get the
+              # real hash from the mismatch error, then set it here.
+              zephyrDepsHash = nixpkgs.lib.fakeHash;
+              meta = {
+                description = "ZMK firmware for Toucan";
+                license = nixpkgs.lib.licenses.mit;
+                platforms = nixpkgs.lib.platforms.all;
+              };
+            };
+            flash = zmk-nix.packages.${system}.flash.override { inherit firmware; };
+          };
+        in
+        {
+          default = cradio.firmware;
+          inherit cradio toucan;
+          update = zmk-nix.packages.${system}.update;
+        }
+      );
 
       apps = forAllSystems (system: {
         update-assets = {
