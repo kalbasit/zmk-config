@@ -1,0 +1,187 @@
+// Copyright (c) 2022 The ZMK Contributors
+// SPDX-License-Identifier: MIT
+//
+// vim: set ft=dts:
+
+#include <behaviors.dtsi>
+#include <dt-bindings/zmk/bt.h>
+#include <dt-bindings/zmk/keys.h>
+#include <dt-bindings/zmk/outputs.h>
+#include <dt-bindings/zmk/pointing.h>
+
+// define layers
+#define COLEMAK   0
+#define SYM       1
+#define SYS       2
+#define NAV       3
+#define NUM       4
+#define SYS_ADMIN 5
+
+// Configure the layer tap — quick-tap-ms lets tap-then-hold repeat (e.g. backspace).
+&lt {
+    quick-tap-ms = <200>;
+};
+
+/ {
+    behaviors {
+        ht: hold_tap {
+            compatible = "zmk,behavior-hold-tap";
+            #binding-cells = <2>;
+            flavor = "tap-preferred";
+            tapping-term-ms = <200>;
+            quick-tap-ms = <200>;
+            require-prior-idle-ms = <125>;
+            bindings = <&kp>, <&kp>;
+        };
+    };
+
+    conditional_layers {
+        compatible = "zmk,conditional-layers";
+
+        // Holding both thumb layer keys on the left hand activates SYS_ADMIN.
+        sys_admin_left {
+            if-layers = <SYM SYS>;
+            then-layer = <SYS_ADMIN>;
+        };
+
+        // Holding both thumb layer keys on the right hand also activates SYS_ADMIN.
+        sys_admin_right {
+            if-layers = <NAV NUM>;
+            then-layer = <SYS_ADMIN>;
+        };
+    };
+
+    keymap {
+        compatible = "zmk,keymap";
+
+        // ─── Toucan 36 physical layout note ────────────────────────────────────
+        // The shield matrix has 6 columns per half (42 positions total), but the
+        // Toucan 36 (Cantor layout) only populates the inner 5 columns per half.
+        // Outer column positions RC(r,0) and RC(r,11) have no physical key and
+        // are bound to &none throughout.  The innermost thumb keys RC(3,5) and
+        // RC(3,6) are left as &trans per user preference.
+        // ────────────────────────────────────────────────────────────────────────
+
+        colemak_layer {
+            display-name = "COLEMAK";
+            bindings = <
+        //╭────────┬──────────┬────────────┬──────────┬──────────┬──────────╮   ╭──────────┬──────────┬──────────┬────────────┬──────────┬────────╮
+        //│ (none) │  Q       │  W/CTRL    │  F/ALT   │  P/CMD   │  G       │   │  J       │  L/CMD   │  U/ALT   │  Y/CTRL    │  ;       │ (none) │
+            &none    &kp Q    &ht LCTRL W  &ht LALT F  &ht LCMD P  &kp G          &kp J   &ht RCMD L  &ht RALT U  &ht RCTRL Y  &kp SEMI   &none
+        //├────────┼──────────┼────────────┼──────────┼──────────┼──────────┤   ├──────────┼──────────┼──────────┼────────────┼──────────┼────────┤
+        //│ (none) │  A       │  R         │  S       │  T       │  D       │   │  H       │  N       │  E       │  I         │  O       │ (none) │
+            &none    &kp A      &kp R        &kp S      &kp T      &kp D          &kp H    &kp N       &kp E       &kp I        &kp O      &none
+        //├────────┼──────────┼────────────┼──────────┼──────────┼──────────┤   ├──────────┼──────────┼──────────┼────────────┼──────────┼────────┤
+        //│ (none) │  Z/SHIFT │  X         │  C       │  V       │  B       │   │  K       │  M       │  ,       │  .         │  //SHIFT │ (none) │
+            &none  &ht LSHFT Z  &kp X        &kp C      &kp V      &kp B          &kp K    &kp M    &kp COMMA    &kp DOT   &ht RSHFT FSLH  &none
+        //╰────────┴──────────┴────────────┼──────────┼──────────┼──────────┤   ├──────────┼──────────┼──────────┼────────────┴──────────┴────────╯
+        //                                 │ SYM/BSPC │ SYS/SPC  │  (none)  │   │  (none)  │ NAV/RET  │  NUM     │
+                                          &lt SYM BSPC &lt SYS SPACE &trans       &trans  &lt NAV RET  &mo NUM
+        //                                 ╰──────────┴──────────┴──────────╯   ╰──────────┴──────────┴──────────╯
+            >;
+        };
+
+        symbols_layer {
+            display-name = "SYM";
+            bindings = <
+        //╭────────┬──────────┬──────────┬──────────┬──────────┬──────────╮   ╭──────────┬──────────┬──────────┬──────────┬──────────┬────────╮
+        //│        │  !       │  @       │  #       │  $       │  %       │   │  ^       │  &       │  *       │  _       │  +       │        │
+            &trans   &kp EXCL   &kp AT     &kp HASH   &kp DLLR   &kp PRCNT      &kp CARET  &kp AMPS   &kp STAR   &kp UNDER  &kp PLUS   &trans
+        //├────────┼──────────┼──────────┼──────────┼──────────┼──────────┤   ├──────────┼──────────┼──────────┼──────────┼──────────┼────────┤
+        //│        │  '       │  [       │  {       │  (       │  `       │   │  ~       │  )       │  }       │  ]       │  "       │        │
+            &trans   &kp APOS   &kp LBKT   &kp LBRC   &kp LPAR   &kp GRAVE      &kp TILDE  &kp RPAR   &kp RBRC   &kp RBKT   &kp DQT    &trans
+        //├────────┼──────────┼──────────┼──────────┼──────────┼──────────┤   ├──────────┼──────────┼──────────┼──────────┼──────────┼────────┤
+        //│        │          │          │          │          │          │   │          │  -       │  =       │  \       │  |       │        │
+            &trans   &trans     &trans     &trans     &trans     &trans         &trans     &kp MINUS  &kp EQUAL  &kp BSLH   &kp PIPE   &trans
+        //╰────────┴──────────┴──────────┼──────────┼──────────┼──────────┤   ├──────────┼──────────┼──────────┼──────────┴──────────┴────────╯
+                                           &trans     &trans     &trans         &trans     &trans     &trans
+        //                               ╰──────────┴──────────┴──────────╯   ╰──────────┴──────────┴──────────╯
+            >;
+        };
+
+        system_layer {
+            display-name = "SYS";
+            bindings = <
+        //╭────────┬──────────┬──────────┬──────────┬──────────┬──────────╮   ╭──────────┬──────────┬──────────┬──────────┬──────────┬────────╮
+        //│        │          │          │          │          │          │   │          │          │          │          │          │        │
+            &trans   &trans     &trans     &trans     &trans     &trans         &trans     &trans     &trans     &trans     &trans     &trans
+        //├────────┼──────────┼──────────┼──────────┼──────────┼──────────┤   ├──────────┼──────────┼──────────┼──────────┼──────────┼────────┤
+        //│        │ BT 1     │ BT 2     │ BT 3     │ BT 4     │          │   │          │          │          │          │ OUT TOG  │        │
+            &trans  &bt BT_SEL 0 &bt BT_SEL 1 &bt BT_SEL 2 &bt BT_SEL 3 &trans  &trans  &trans     &trans     &trans   &out OUT_TOG  &trans
+        //├────────┼──────────┼──────────┼──────────┼──────────┼──────────┤   ├──────────┼──────────┼──────────┼──────────┼──────────┼────────┤
+        //│        │          │          │          │          │          │   │          │          │          │          │          │        │
+            &trans   &trans     &trans     &trans     &trans     &trans         &trans     &trans     &trans     &trans     &trans     &trans
+        //╰────────┴──────────┴──────────┼──────────┼──────────┼──────────┤   ├──────────┼──────────┼──────────┼──────────┴──────────┴────────╯
+                                           &trans     &trans     &trans         &trans     &trans     &trans
+        //                               ╰──────────┴──────────┴──────────╯   ╰──────────┴──────────┴──────────╯
+            >;
+        };
+
+        navigation_layer {
+            display-name = "NAV";
+            bindings = <
+        //╭────────┬──────────┬──────────────┬──────────────┬───────────────┬───────────────╮   ╭──────────┬──────────┬──────────┬──────────┬──────────┬────────╮
+        //│        │  ESC     │  scroll →    │  mouse ↑     │  scroll ←     │  scroll ↓     │   │          │  HOME    │  PG DN   │  PG UP   │  END     │        │
+            &trans   &kp ESC  &msc MOVE_RIGHT &mmv MOVE_UP  &msc MOVE_LEFT  &msc MOVE_DOWN        &trans   &kp HOME   &kp PG_DN  &kp PG_UP  &kp END    &trans
+        //├────────┼──────────┼──────────────┼──────────────┼───────────────┼───────────────┤   ├──────────┼──────────┼──────────┼──────────┼──────────┼────────┤
+        //│        │  TAB     │  mouse ←     │  mouse ↓     │  mouse →      │  scroll ↑     │   │          │  ←       │  ↓       │  ↑       │  →       │        │
+            &trans   &kp TAB  &mmv MOVE_LEFT  &mmv MOVE_DOWN &mmv MOVE_RIGHT &msc MOVE_UP          &trans   &kp LEFT   &kp DOWN   &kp UP     &kp RIGHT  &trans
+        //├────────┼──────────┼──────────────┼──────────────┼───────────────┼───────────────┤   ├──────────┼──────────┼──────────┼──────────┼──────────┼────────┤
+        //│        │  CAPS WD │  prev track  │  play/pause  │  next track   │               │   │          │  vol dn  │  vol up  │  mute    │          │        │
+            &trans  &caps_word  &kp C_PREV     &kp C_PP       &kp C_NEXT     &trans                &trans  &kp C_VOL_DN &kp C_VOL_UP &kp C_MUTE &trans   &trans
+        //╰────────┴──────────┴──────────────┼──────────────┼───────────────┼───────────────┤   ├──────────┼──────────┼──────────┼──────────┴──────────┴────────╯
+        //                                   │  click 1     │  click 2      │               │   │          │          │          │
+                                               &mkp MB1       &mkp MB2        &trans                &trans   &trans     &trans
+        //                                   ╰──────────────┴───────────────┴───────────────╯   ╰──────────┴──────────┴──────────╯
+            >;
+        };
+
+        numbers_layer {
+            display-name = "NUM";
+            bindings = <
+        //╭────────┬──────────┬──────────┬──────────┬──────────┬──────────╮   ╭──────────┬──────────┬──────────┬──────────┬──────────┬────────╮
+        //│        │  F1      │  F2      │  F3      │  F4      │  F5      │   │  F6      │  F7      │  F8      │  F9      │  F10     │        │
+            &trans   &kp F1     &kp F2     &kp F3     &kp F4     &kp F5         &kp F6     &kp F7     &kp F8     &kp F9     &kp F10    &trans
+        //├────────┼──────────┼──────────┼──────────┼──────────┼──────────┤   ├──────────┼──────────┼──────────┼──────────┼──────────┼────────┤
+        //│        │  1       │  2       │  3       │  4       │  5       │   │  6       │  7       │  8       │  9       │  0       │        │
+            &trans   &kp N1     &kp N2     &kp N3     &kp N4     &kp N5         &kp N6     &kp N7     &kp N8     &kp N9     &kp N0     &trans
+        //├────────┼──────────┼──────────┼──────────┼──────────┼──────────┤   ├──────────┼──────────┼──────────┼──────────┼──────────┼────────┤
+        //│        │  F11     │  F12     │  F13     │  F14     │  F15     │   │  F16     │  F17     │  F18     │  F19     │  F20     │        │
+            &trans   &kp F11    &kp F12    &kp F13    &kp F14    &kp F15        &kp F16    &kp F17    &kp F18    &kp F19    &kp F20    &trans
+        //╰────────┴──────────┴──────────┼──────────┼──────────┼──────────┤   ├──────────┼──────────┼──────────┼──────────┴──────────┴────────╯
+                                           &trans     &trans     &trans         &trans     &trans     &trans
+        //                               ╰──────────┴──────────┴──────────╯   ╰──────────┴──────────┴──────────╯
+            >;
+        };
+
+        system_admin_layer {
+            display-name = "SYSADM";
+            bindings = <
+        //╭────────┬──────────────┬──────────────┬──────────────┬──────────┬────────────╮   ╭────────────┬──────────┬──────────┬──────────┬──────────┬────────╮
+        //│        │  BT disc 1   │  BT disc 2   │  BT disc 3   │          │  BOOTLOAD  │   │  BOOTLOAD  │          │          │          │          │        │
+            &trans  &bt BT_DISC 0  &bt BT_DISC 1  &bt BT_DISC 2  &trans    &bootloader      &bootloader  &trans     &trans     &trans     &trans     &trans
+        //├────────┼──────────────┼──────────────┼──────────────┼──────────┼────────────┤   ├────────────┼──────────┼──────────┼──────────┼──────────┼────────┤
+        //│        │              │              │              │          │            │   │            │          │          │          │          │        │
+            &trans   &trans         &trans         &trans         &trans     &trans           &trans       &trans     &trans     &trans     &trans     &trans
+        //├────────┼──────────────┼──────────────┼──────────────┼──────────┼────────────┤   ├────────────┼──────────┼──────────┼──────────┼──────────┼────────┤
+        //│        │              │  BT clear    │  BT clr all  │          │            │   │            │          │          │          │          │        │
+            &trans   &trans        &bt BT_CLR   &bt BT_CLR_ALL   &trans     &trans           &trans       &trans     &trans     &trans     &trans     &trans
+        //╰────────┴──────────────┴──────────────┼──────────────┼──────────┼────────────┤   ├────────────┼──────────┼──────────┼──────────┴──────────┴────────╯
+                                                   &trans         &trans     &trans           &trans       &trans     &trans
+        //                                       ╰──────────────┴──────────┴────────────╯   ╰────────────┴──────────┴──────────╯
+            >;
+        };
+
+        extra_1 {
+            status = "reserved";
+        };
+
+        extra_2 {
+            status = "reserved";
+        };
+
+        extra_3 {
+            status = "reserved";
+        };
+    };
+};

@@ -12,42 +12,86 @@
       inherit (zmk-nix.inputs) nixpkgs;
 
       forAllSystems = nixpkgs.lib.genAttrs (nixpkgs.lib.attrNames zmk-nix.packages);
+
+      src = nixpkgs.lib.sourceFilesBySuffices self [
+        ".board"
+        ".cmake"
+        ".conf"
+        ".defconfig"
+        ".dts"
+        ".dtsi"
+        ".json"
+        ".keymap"
+        ".overlay"
+        ".shield"
+        ".yml"
+        "_defconfig"
+      ];
     in
     {
-      packages = forAllSystems (system: rec {
-        default = firmware;
-
-        firmware = zmk-nix.legacyPackages.${system}.buildSplitKeyboard {
-          name = "firmware";
-
-          src = nixpkgs.lib.sourceFilesBySuffices self [
-            ".board"
-            ".cmake"
-            ".conf"
-            ".defconfig"
-            ".dts"
-            ".dtsi"
-            ".json"
-            ".keymap"
-            ".overlay"
-            ".shield"
-            ".yml"
-            "_defconfig"
-          ];
-
-          board = "nice_nano_v2";
-          shield = "cradio_%PART%";
-
-          zephyrDepsHash = "sha256-IGyYY6MzYoHzVRlYioVy84GRH7ZN5uyQcarJIo5oHiQ=";
-
-          meta = {
-            description = "ZMK firmware";
-            license = nixpkgs.lib.licenses.mit;
-            platforms = nixpkgs.lib.platforms.all;
+      legacyPackages = forAllSystems (system: {
+        cradio = rec {
+          firmware = zmk-nix.legacyPackages.${system}.buildSplitKeyboard {
+            name = "cradio-firmware";
+            inherit src;
+            board = "nice_nano_v2";
+            shield = "cradio_%PART%";
+            # Run `nix build .#cradio.firmware` to get the actual hash after
+            # any west.yml change.
+            zephyrDepsHash = "sha256-gSI7pjinegAZrSgezz1JTkXrCHr2wr7a7F6UAP7OM9g=";
+            meta = {
+              description = "ZMK firmware for Cradio (Sweep)";
+              license = nixpkgs.lib.licenses.mit;
+              platforms = nixpkgs.lib.platforms.all;
+            };
           };
+          flash = zmk-nix.packages.${system}.flash.override { inherit firmware; };
         };
 
-        flash = zmk-nix.packages.${system}.flash.override { inherit firmware; };
+        toucan =
+          let
+            inherit (zmk-nix.legacyPackages.${system}) buildKeyboard;
+            pkgs = nixpkgs.legacyPackages.${system};
+            # Left and right have different shield stacks:
+            #   left  — nice_view_gem (defines the display UI, references nice_view_spi
+            #           from the toucan_left overlay)
+            #   right — no display shield; nice_view_gem must be omitted or the
+            #           devicetree fails with "undefined node label 'nice_view_spi'"
+            left = buildKeyboard {
+              name = "toucan-firmware-left";
+              inherit src;
+              board = "seeeduino_xiao_ble";
+              shield = "toucan_left rgbled_adapter nice_view_gem";
+              zephyrDepsHash = "sha256-gSI7pjinegAZrSgezz1JTkXrCHr2wr7a7F6UAP7OM9g=";
+            };
+            right = buildKeyboard {
+              name = "toucan-firmware-right";
+              inherit src;
+              board = "seeeduino_xiao_ble";
+              shield = "toucan_right rgbled_adapter";
+              zephyrDepsHash = "sha256-gSI7pjinegAZrSgezz1JTkXrCHr2wr7a7F6UAP7OM9g=";
+              # Reuse the west deps already fetched for the left build.
+              westDeps = left.westDeps;
+            };
+          in
+          rec {
+            firmware = pkgs.runCommand "toucan-firmware" {
+              meta = {
+                description = "ZMK firmware for Toucan";
+                license = nixpkgs.lib.licenses.mit;
+                platforms = nixpkgs.lib.platforms.all;
+              };
+            } ''
+              mkdir $out
+              ln -s ${left}/zmk.uf2 $out/zmk_left.uf2
+              ln -s ${right}/zmk.uf2 $out/zmk_right.uf2
+            '';
+            flash = zmk-nix.packages.${system}.flash.override { inherit firmware; };
+          };
+      });
+
+      packages = forAllSystems (system: {
+        default = self.legacyPackages.${system}.cradio.firmware;
         update = zmk-nix.packages.${system}.update;
       });
 
@@ -81,7 +125,8 @@
         };
       });
 
-      devShells = forAllSystems (system:
+      devShells = forAllSystems (
+        system:
         let
           pkgs = nixpkgs.legacyPackages.${system};
           # canopen has flaky timing tests on macOS that cause the build to fail.
@@ -90,12 +135,15 @@
           # zmk-nix's own pkgs and cannot be retroactively patched via overlays.
           python3 = pkgs.python3.override {
             packageOverrides = _: prev: {
-              canopen = prev.canopen.overridePythonAttrs (_: { doCheck = false; });
+              canopen = prev.canopen.overridePythonAttrs (_: {
+                doCheck = false;
+              });
             };
           };
         in
         {
           default = pkgs.callPackage "${zmk-nix}/nix/shell.nix" { inherit python3; };
-        });
+        }
+      );
     };
 }
