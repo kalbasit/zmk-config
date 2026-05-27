@@ -2,6 +2,6 @@
 /.west
 /build
 /modules
-/result
+/result*
 /zephyr
 /zmk
