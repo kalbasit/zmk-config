@@ -26,12 +26,12 @@ layers:
       - .
       - {t: /, h: RSHFT}
       - ''
-    - - {t: ▽, type: trans}
+    - - ''
       - {t: BSPC, h: SYM}
-      - {t: SPACE, h: NAV}
-      - {t: RET, h: NUM}
-      - SYS
-      - {t: ▽, type: trans}
+      - {t: SPACE, h: SYS}
+      - {t: RET, h: NAV}
+      - NUM
+      - ''
   SYM:
     - - {t: ▽, type: trans}
       - '!'
@@ -69,98 +69,12 @@ layers:
       - \
       - '|'
       - {t: ▽, type: trans}
-    - - {t: ▽, type: trans}
+    - - ''
       - {type: held}
       - {t: ▽, type: trans}
       - {t: ▽, type: trans}
       - {t: ▽, type: trans}
-      - {t: ▽, type: trans}
-  SYS:
-    - - {t: ▽, type: trans}
-      - {t: ▽, type: trans}
-      - {t: ▽, type: trans}
-      - {t: ▽, type: trans}
-      - {t: ▽, type: trans}
-      - {t: ▽, type: trans}
-      - {t: ▽, type: trans}
-      - {t: ▽, type: trans}
-      - {t: ▽, type: trans}
-      - {t: ▽, type: trans}
-      - {t: ▽, type: trans}
-      - {t: ▽, type: trans}
-    - - {t: ▽, type: trans}
-      - {t: BT, h: '0'}
-      - {t: BT, h: '1'}
-      - {t: BT, h: '2'}
-      - {t: BT, h: '3'}
-      - {t: ▽, type: trans}
-      - {t: ▽, type: trans}
-      - {t: ▽, type: trans}
-      - {t: ▽, type: trans}
-      - {t: ▽, type: trans}
-      - OUT TOG
-      - {t: ▽, type: trans}
-    - - {t: ▽, type: trans}
-      - {t: ▽, type: trans}
-      - {t: ▽, type: trans}
-      - {t: ▽, type: trans}
-      - {t: ▽, type: trans}
-      - {t: ▽, type: trans}
-      - {t: ▽, type: trans}
-      - {t: ▽, type: trans}
-      - {t: ▽, type: trans}
-      - {t: ▽, type: trans}
-      - {t: ▽, type: trans}
-      - {t: ▽, type: trans}
-    - - {t: ▽, type: trans}
-      - {t: ▽, type: trans}
-      - {t: ▽, type: trans}
-      - {t: ▽, type: trans}
-      - {type: held}
-      - {t: ▽, type: trans}
-  NAV:
-    - - {t: ▽, type: trans}
-      - ESC
-      - '&msc MOVE_RIGHT'
-      - '&mmv MOVE_UP'
-      - '&msc MOVE_LEFT'
-      - '&msc MOVE_DOWN'
-      - {t: ▽, type: trans}
-      - HOME
-      - PG DN
-      - PG UP
-      - END
-      - {t: ▽, type: trans}
-    - - {t: ▽, type: trans}
-      - TAB
-      - '&mmv MOVE_LEFT'
-      - '&mmv MOVE_DOWN'
-      - '&mmv MOVE_RIGHT'
-      - '&msc MOVE_UP'
-      - {t: ▽, type: trans}
-      - LEFT
-      - DOWN
-      - UP
-      - RIGHT
-      - {t: ▽, type: trans}
-    - - {t: ▽, type: trans}
-      - '&caps_word'
-      - PREV
-      - PP
-      - NEXT
-      - {t: ▽, type: trans}
-      - {t: ▽, type: trans}
-      - VOL DN
-      - VOL UP
-      - MUTE
-      - {t: ▽, type: trans}
-      - {t: ▽, type: trans}
-    - - '&mkp MB1'
-      - '&mkp MB2'
-      - {type: held}
-      - {t: ▽, type: trans}
-      - {t: ▽, type: trans}
-      - {t: ▽, type: trans}
+      - ''
   NUM:
     - - {t: ▽, type: trans}
       - F1
@@ -198,12 +112,98 @@ layers:
       - F19
       - F20
       - {t: ▽, type: trans}
+    - - ''
+      - {t: ▽, type: trans}
+      - {t: ▽, type: trans}
+      - {t: ▽, type: trans}
+      - {type: held}
+      - ''
+  SYS:
     - - {t: ▽, type: trans}
       - {t: ▽, type: trans}
+      - {t: ▽, type: trans}
+      - {t: ▽, type: trans}
+      - {t: ▽, type: trans}
+      - {t: ▽, type: trans}
+      - {t: ▽, type: trans}
+      - {t: ▽, type: trans}
+      - {t: ▽, type: trans}
+      - {t: ▽, type: trans}
+      - {t: ▽, type: trans}
+      - {t: ▽, type: trans}
+    - - {t: ▽, type: trans}
+      - {t: BT, h: '0'}
+      - {t: BT, h: '1'}
+      - {t: BT, h: '2'}
+      - {t: BT, h: '3'}
+      - {t: ▽, type: trans}
+      - {t: ▽, type: trans}
+      - {t: ▽, type: trans}
+      - {t: ▽, type: trans}
+      - {t: ▽, type: trans}
+      - OUT TOG
+      - {t: ▽, type: trans}
+    - - {t: ▽, type: trans}
+      - {t: ▽, type: trans}
+      - {t: ▽, type: trans}
+      - {t: ▽, type: trans}
+      - {t: ▽, type: trans}
+      - {t: ▽, type: trans}
+      - {t: ▽, type: trans}
+      - {t: ▽, type: trans}
+      - {t: ▽, type: trans}
+      - {t: ▽, type: trans}
+      - {t: ▽, type: trans}
+      - {t: ▽, type: trans}
+    - - ''
       - {t: ▽, type: trans}
       - {type: held}
       - {t: ▽, type: trans}
       - {t: ▽, type: trans}
+      - ''
+  NAV:
+    - - {t: ▽, type: trans}
+      - ESC
+      - '&msc MOVE_RIGHT'
+      - '&mmv MOVE_UP'
+      - '&msc MOVE_LEFT'
+      - '&msc MOVE_DOWN'
+      - {t: ▽, type: trans}
+      - HOME
+      - PG DN
+      - PG UP
+      - END
+      - {t: ▽, type: trans}
+    - - {t: ▽, type: trans}
+      - TAB
+      - '&mmv MOVE_LEFT'
+      - '&mmv MOVE_DOWN'
+      - '&mmv MOVE_RIGHT'
+      - '&msc MOVE_UP'
+      - {t: ▽, type: trans}
+      - LEFT
+      - DOWN
+      - UP
+      - RIGHT
+      - {t: ▽, type: trans}
+    - - {t: ▽, type: trans}
+      - '&caps_word'
+      - PREV
+      - PP
+      - NEXT
+      - {t: ▽, type: trans}
+      - {t: ▽, type: trans}
+      - VOL DN
+      - VOL UP
+      - MUTE
+      - {t: ▽, type: trans}
+      - {t: ▽, type: trans}
+    - - ''
+      - '&mkp MB1'
+      - '&mkp MB2'
+      - {type: held}
+      - {t: ▽, type: trans}
+      - ''
   SYSADM:
     - - {t: ▽, type: trans}
       - {t: BT DISC, h: '0'}
@@ -241,9 +241,9 @@ layers:
       - {t: ▽, type: trans}
       - {t: ▽, type: trans}
       - {t: ▽, type: trans}
-    - - {t: ▽, type: trans}
+    - - ''
       - {t: ▽, type: trans}
       - {t: ▽, type: trans}
       - {type: held}
       - {type: held}
-      - {t: ▽, type: trans}
+      - ''
