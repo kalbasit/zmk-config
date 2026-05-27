@@ -75,8 +75,8 @@
         //│ (none) │  Z/SHIFT │  X         │  C       │  V       │  B       │   │  K       │  M       │  ,       │  .         │  //SHIFT │ (none) │
             &none  &ht LSHFT Z  &kp X        &kp C      &kp V      &kp B          &kp K    &kp M    &kp COMMA    &kp DOT   &ht RSHFT FSLH  &none
         //╰────────┴──────────┴────────────┼──────────┼──────────┼──────────┤   ├──────────┼──────────┼──────────┼────────────┴──────────┴────────╯
-        //                                 │ SYM/BSPC │ SYS/SPC  │  (none)  │   │  (none)  │ NAV/RET  │  NUM     │
-                                          &lt SYM BSPC &lt SYS SPACE &trans       &trans  &lt NAV RET  &mo NUM
+        //                                 │  (none)  │ SYM/BSPC │ SYS/SPC  │   │ NAV/RET  │  NUM     │  (none)  │
+                                           &trans  &lt SYM BSPC &lt SYS SPACE   &lt NAV RET  &mo NUM   &trans
         //                                 ╰──────────┴──────────┴──────────╯   ╰──────────┴──────────┴──────────╯
             >;
         };
