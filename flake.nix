@@ -48,26 +48,46 @@
           flash = zmk-nix.packages.${system}.flash.override { inherit firmware; };
         };
 
-        toucan = rec {
-          firmware = zmk-nix.legacyPackages.${system}.buildSplitKeyboard {
-            name = "toucan-firmware";
-            inherit src;
-            board = "seeeduino_xiao_ble";
-            # Left: toucan_left + rgbled_adapter + nice_view_gem
-            # Right: toucan_right + rgbled_adapter (nice_view_gem compiled
-            # in but harmless — right has no display header).
-            shield = "toucan_%PART% rgbled_adapter nice_view_gem";
-            # Placeholder — run `nix build .#toucan.firmware` to get the
-            # real hash from the mismatch error, then set it here.
-            zephyrDepsHash = nixpkgs.lib.fakeHash;
-            meta = {
-              description = "ZMK firmware for Toucan";
-              license = nixpkgs.lib.licenses.mit;
-              platforms = nixpkgs.lib.platforms.all;
+        toucan =
+          let
+            inherit (zmk-nix.legacyPackages.${system}) buildKeyboard;
+            pkgs = nixpkgs.legacyPackages.${system};
+            # Left and right have different shield stacks:
+            #   left  — nice_view_gem (defines the display UI, references nice_view_spi
+            #           from the toucan_left overlay)
+            #   right — no display shield; nice_view_gem must be omitted or the
+            #           devicetree fails with "undefined node label 'nice_view_spi'"
+            left = buildKeyboard {
+              name = "toucan-firmware-left";
+              inherit src;
+              board = "seeeduino_xiao_ble";
+              shield = "toucan_left rgbled_adapter nice_view_gem";
+              zephyrDepsHash = "sha256-gSI7pjinegAZrSgezz1JTkXrCHr2wr7a7F6UAP7OM9g=";
             };
+            right = buildKeyboard {
+              name = "toucan-firmware-right";
+              inherit src;
+              board = "seeeduino_xiao_ble";
+              shield = "toucan_right rgbled_adapter";
+              zephyrDepsHash = "sha256-gSI7pjinegAZrSgezz1JTkXrCHr2wr7a7F6UAP7OM9g=";
+              # Reuse the west deps already fetched for the left build.
+              westDeps = left.westDeps;
+            };
+          in
+          rec {
+            firmware = pkgs.runCommand "toucan-firmware" {
+              meta = {
+                description = "ZMK firmware for Toucan";
+                license = nixpkgs.lib.licenses.mit;
+                platforms = nixpkgs.lib.platforms.all;
+              };
+            } ''
+              mkdir $out
+              ln -s ${left}/zmk.uf2 $out/zmk_left.uf2
+              ln -s ${right}/zmk.uf2 $out/zmk_right.uf2
+            '';
+            flash = zmk-nix.packages.${system}.flash.override { inherit firmware; };
           };
-          flash = zmk-nix.packages.${system}.flash.override { inherit firmware; };
-        };
       });
 
       packages = forAllSystems (system: {
