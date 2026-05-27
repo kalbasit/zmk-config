@@ -1,0 +1,14 @@
+// Override the Cirque trackpad scroll-activation layers.
+//
+// The upstream default activates scroll on layers <1 2> (its NAV + SYM).
+// Our layer numbering:
+//   0 COLEMAK  1 SYM  2 SYS  3 NAV  4 NUM  5 SYS_ADMIN
+//
+// Holding SYM (left thumb) or NUM (right thumb) converts trackpad
+// movement to scroll.  NAV layer keeps its keyboard-driven &mmv/&msc
+// bindings as a fallback for when the trackpad is unavailable.
+&glidepoint_listener {
+    scroller {
+        layers = <1 4>;
+    };
+};
