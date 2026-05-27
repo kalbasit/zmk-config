@@ -38,7 +38,7 @@
             shield = "cradio_%PART%";
             # Run `nix build .#cradio.firmware` to get the actual hash after
             # any west.yml change.
-            zephyrDepsHash = "sha256-gSI7pjinegAZrSgezz1JTkXrCHr2wr7a7F6UAP7OM9g=";
+            zephyrDepsHash = "sha256-63E95iZ/uJRgs6YOmEOUrtd9UM22oquof3a+O4wTIgs=";
             meta = {
               description = "ZMK firmware for Cradio (Sweep)";
               license = nixpkgs.lib.licenses.mit;
@@ -62,14 +62,14 @@
               inherit src;
               board = "seeeduino_xiao_ble";
               shield = "toucan_left rgbled_adapter nice_view_gem";
-              zephyrDepsHash = "sha256-gSI7pjinegAZrSgezz1JTkXrCHr2wr7a7F6UAP7OM9g=";
+              zephyrDepsHash = "sha256-63E95iZ/uJRgs6YOmEOUrtd9UM22oquof3a+O4wTIgs=";
             };
             right = buildKeyboard {
               name = "toucan-firmware-right";
               inherit src;
               board = "seeeduino_xiao_ble";
               shield = "toucan_right rgbled_adapter";
-              zephyrDepsHash = "sha256-gSI7pjinegAZrSgezz1JTkXrCHr2wr7a7F6UAP7OM9g=";
+              zephyrDepsHash = "sha256-63E95iZ/uJRgs6YOmEOUrtd9UM22oquof3a+O4wTIgs=";
               # Reuse the west deps already fetched for the left build.
               westDeps = left.westDeps;
             };
