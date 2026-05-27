@@ -2,6 +2,12 @@ manifest:
   remotes:
     - name: zmkfirmware
       url-base: https://github.com/zmkfirmware
+    - name: kalbasit
+      url-base: https://github.com/kalbasit
+    - name: caksoylar
+      url-base: https://github.com/caksoylar
+    - name: geeksville
+      url-base: https://github.com/geeksville
   projects:
     - name: zmk
       remote: zmkfirmware
@@ -30,5 +36,17 @@ manifest:
           - openthread
           - edtt
           - trusted-firmware-m
+    # Toucan keyboard shield definitions
+    - name: zmk-keyboard-toucan
+      remote: kalbasit
+      revision: cc9e67ac1993bb8795a37e713dcfbdb93b9677dd  # main
+    # Cirque trackpad input module (toucan-specific branch)
+    - name: cirque-input-module
+      remote: geeksville
+      revision: toucan
+    # RGB LED widget
+    - name: zmk-rgbled-widget
+      remote: caksoylar
+      revision: v0.3
   self:
     path: config
