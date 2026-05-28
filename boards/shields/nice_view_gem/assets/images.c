@@ -70,6 +70,51 @@ const lv_img_dsc_t profiles = {
     .data = profiles_map,
 };
 
+/* Toucan silhouette — 32×17, 1-bit indexed (index 0 = black, index 1 = white)
+ *
+ * Profile facing right:
+ *   rows 0-2  : head (narrow, top-left)
+ *   row  3    : head + eye (hole at col 2) + beak begins
+ *   rows 4-8  : beak extends right, tapering toward tip
+ *   rows 9-12 : compact body below beak
+ *   rows 13-16: tail feathers tapering down-left
+ */
+#ifndef LV_ATTRIBUTE_IMG_TOUCAN
+#define LV_ATTRIBUTE_IMG_TOUCAN
+#endif
+
+const LV_ATTRIBUTE_MEM_ALIGN LV_ATTRIBUTE_LARGE_CONST LV_ATTRIBUTE_IMG_TOUCAN uint8_t toucan_map[] = {
+    0x00, 0x00, 0x00, 0xff, /*Color of index 0 — black (background)*/
+    0xff, 0xff, 0xff, 0xff, /*Color of index 1 — white (toucan)*/
+    /* row  0: head top (cols 2-6)          */ 0x3E, 0x00, 0x00, 0x00,
+    /* row  1: head (cols 1-7)              */ 0x7F, 0x00, 0x00, 0x00,
+    /* row  2: head+body (cols 0-8)         */ 0xFF, 0x80, 0x00, 0x00,
+    /* row  3: eye@col2, beak to col 23     */ 0xDF, 0xFF, 0xFF, 0x00,
+    /* row  4: beak widest (cols 0-25)      */ 0xFF, 0xFF, 0xFF, 0xC0,
+    /* row  5: beak (cols 0-23)             */ 0xFF, 0xFF, 0xFF, 0x00,
+    /* row  6: beak tapering (cols 0-21)    */ 0xFF, 0xFF, 0xFC, 0x00,
+    /* row  7: beak tapering (cols 1-19)    */ 0x7F, 0xFF, 0xF0, 0x00,
+    /* row  8: beak tip (cols 2-15)         */ 0x3F, 0xFF, 0x00, 0x00,
+    /* row  9: body/neck (cols 3-12)        */ 0x1F, 0xF8, 0x00, 0x00,
+    /* row 10: body (cols 2-11)             */ 0x3F, 0xF0, 0x00, 0x00,
+    /* row 11: body (cols 1-10)             */ 0x7F, 0xE0, 0x00, 0x00,
+    /* row 12: body+tail start (cols 0-9)   */ 0xFF, 0xC0, 0x00, 0x00,
+    /* row 13: tail (cols 0-7)              */ 0xFF, 0x00, 0x00, 0x00,
+    /* row 14: tail (cols 0-5)              */ 0xFC, 0x00, 0x00, 0x00,
+    /* row 15: tail (cols 0-3)              */ 0xF0, 0x00, 0x00, 0x00,
+    /* row 16: tail tip (cols 0-1)          */ 0xC0, 0x00, 0x00, 0x00,
+};
+
+const lv_img_dsc_t toucan = {
+    .header.cf = LV_IMG_CF_INDEXED_1BIT,
+    .header.always_zero = 0,
+    .header.reserved = 0,
+    .header.w = 32,
+    .header.h = 17,
+    .data_size = 76,  /* 8 palette + 17 rows × 4 bytes */
+    .data = toucan_map,
+};
+
 /* L Battery */
 #ifndef LV_ATTRIBUTE_IMG_L_BATTERY_100
 #define LV_ATTRIBUTE_IMG_L_BATTERY_100
