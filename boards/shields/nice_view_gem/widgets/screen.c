@@ -35,36 +35,6 @@ struct connection_status_state {
 
 static sys_slist_t widgets = SYS_SLIST_STATIC_INIT(&widgets);
 
-/* ── Animation timer ────────────────────────────────────────────────────── */
-
-/* Forward declaration — draw_top is defined later in this file */
-static void draw_top(lv_obj_t *widget, lv_color_t cbuf[], const struct status_state *state);
-
-static lv_timer_t *anim_timer = NULL;
-
-static void anim_timer_cb(lv_timer_t *timer) {
-    ARG_UNUSED(timer);
-    struct zmk_widget_screen *widget;
-    SYS_SLIST_FOR_EACH_CONTAINER(&widgets, widget, node) {
-        layer_animation_tick(widget->state.layer_index);
-        draw_top(widget->obj, widget->cbuf3, &widget->state);
-    }
-    /* Timer runs continuously while awake; stopped only on sleep. */
-}
-
-static void start_anim_timer(void) {
-    if (anim_timer == NULL) {
-        anim_timer = lv_timer_create(anim_timer_cb, 67, NULL); /* ~15 fps */
-    }
-}
-
-static void stop_anim_timer(void) {
-    if (anim_timer != NULL) {
-        lv_timer_del(anim_timer);
-        anim_timer = NULL;
-    }
-}
-
 /**
  * Draw buffers
  **/
@@ -167,8 +137,7 @@ ZMK_SUBSCRIPTION(widget_battery_peripheral_status, zmk_peripheral_battery_state_
 
 static void set_layer_status(struct zmk_widget_screen *widget, struct layer_status_state state) {
     widget->state.layer_index = zmk_keymap_highest_layer_active();
-    layer_animation_reset(widget->state.layer_index);
-    draw_top(widget->obj, widget->cbuf3, &widget->state);
+    draw_top(widget->obj, widget->cbuf, &widget->state);
 }
 
 static void layer_status_update_cb(struct layer_status_state state) {
@@ -247,16 +216,10 @@ static int display_activity_event_handler(const zmk_event_t *eh) {
     switch (ev->state) {
     case ZMK_ACTIVITY_ACTIVE:
         set_sleep_screen_active(false);
-        start_anim_timer(); /* resume bouncing on wake */
-        // No need to force a redraw, it will happen automatically if really coming back from sleep (ACTIVE also comes after IDLE)
-        //force_redraw_all_widgets();
         break;
     case ZMK_ACTIVITY_SLEEP:
         set_sleep_screen_active(true);
-        stop_anim_timer(); /* halt animation before deep sleep */
         force_redraw_all_widgets();
-        // Force LVGL to process pending updates and flush to display hardware
-        // before the CPU enters deep sleep
         lv_task_handler();
         lv_refr_now(NULL);
         break;
@@ -286,7 +249,6 @@ int zmk_widget_screen_init(struct zmk_widget_screen *widget, lv_obj_t *parent) {
     widget_battery_peripheral_status_init();
     widget_layer_status_init();
     widget_output_status_init();
-    start_anim_timer(); /* kick off bouncing immediately on base layer */
 
     return 0;
 }
