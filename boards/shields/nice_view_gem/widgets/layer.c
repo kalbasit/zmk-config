@@ -1,11 +1,9 @@
 #include <zephyr/kernel.h>
-#include <drivers/behavior.h>
 #include <stdio.h>
 #include <string.h>
 
 #include "layer.h"
 #include "../assets/custom_fonts.h"
-#include <zmk/physical_layouts.h>
 #include <zmk/keymap.h>
 #include <zmk/matrix.h>
 
