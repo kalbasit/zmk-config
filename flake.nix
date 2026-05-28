@@ -15,17 +15,20 @@
 
       src = nixpkgs.lib.sourceFilesBySuffices self [
         ".board"
+        ".c"
         ".cmake"
         ".conf"
         ".defconfig"
         ".dts"
         ".dtsi"
+        ".h"
         ".json"
         ".keymap"
         ".overlay"
         ".shield"
         ".yml"
         "_defconfig"
+        "CMakeLists.txt"
       ];
     in
     {
