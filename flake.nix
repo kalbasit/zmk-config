@@ -65,7 +65,7 @@
               inherit src;
               board = "seeeduino_xiao_ble";
               shield = "toucan_left rgbled_adapter nice_view_gem";
-              zephyrDepsHash = "";
+              zephyrDepsHash = "sha256-xXfzAlOmt3cGNnPOYcxFdwksNv4w2OEU+GQ8qLa2HoQ=";
             };
             right = buildKeyboard {
               name = "toucan-firmware-right";
