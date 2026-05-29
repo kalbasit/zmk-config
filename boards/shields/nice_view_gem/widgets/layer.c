@@ -10,6 +10,7 @@
 /* ── Toucan sprite dimensions (drawn with LVGL primitives) ─────────────── */
 #define SPRITE_W   48
 #define SPRITE_H   40
+
 static void draw_wing(lv_obj_t *canvas, int16_t sx, int16_t sy,
                       int deflection) {
     int extension = deflection * 4;
@@ -82,6 +83,33 @@ static void draw_toucan(lv_obj_t *canvas, int16_t sx, int16_t sy,
     lv_canvas_draw_rect(canvas, sx + 12, sy + 5, 3, 3, &eye);
 }
 
+/* ── Toucan pre-render cache ───────────────────────────────────────────── */
+
+static lv_color_t   toucan_cache_buf[SPRITE_W * SPRITE_H];
+static lv_img_dsc_t toucan_img_dsc;
+static bool         toucan_cached = false;
+
+static void ensure_toucan_cached(void) {
+    if (toucan_cached) return;
+
+    lv_obj_t *tmp = lv_canvas_create(lv_layer_top());
+    lv_canvas_set_buffer(tmp, toucan_cache_buf, SPRITE_W, SPRITE_H,
+                         LV_IMG_CF_TRUE_COLOR);
+    lv_canvas_fill_bg(tmp, LVGL_BACKGROUND, LV_OPA_COVER);
+    draw_toucan(tmp, 0, 0, 3);
+    lv_obj_del(tmp);
+
+    toucan_img_dsc.header.cf          = LV_IMG_CF_TRUE_COLOR;
+    toucan_img_dsc.header.always_zero = 0;
+    toucan_img_dsc.header.reserved    = 0;
+    toucan_img_dsc.header.w           = SPRITE_W;
+    toucan_img_dsc.header.h           = SPRITE_H;
+    toucan_img_dsc.data_size          = sizeof(toucan_cache_buf);
+    toucan_img_dsc.data               = (const uint8_t *)toucan_cache_buf;
+
+    toucan_cached = true;
+}
+
 /* ── Helpers ───────────────────────────────────────────────────────────── */
 
 static const char *get_layer_name(uint8_t layer_index,
@@ -99,10 +127,14 @@ static const char *get_layer_name(uint8_t layer_index,
 
 void draw_layer_status(lv_obj_t *canvas, const struct status_state *state) {
     if (state->layer_index == 0) {
-        draw_toucan(canvas,
-                    (SCREEN_WIDTH - SPRITE_W) / 2,
-                    ANIM_ZONE_Y + (ANIM_ZONE_H - SPRITE_H) / 2,
-                    3); /* static mid-flap pose */
+        ensure_toucan_cached();
+        lv_draw_img_dsc_t img_dsc;
+        lv_draw_img_dsc_init(&img_dsc);
+        lv_canvas_draw_img(canvas,
+                           (SCREEN_WIDTH - SPRITE_W) / 2,
+                           ANIM_ZONE_Y + (ANIM_ZONE_H - SPRITE_H) / 2,
+                           &toucan_img_dsc,
+                           &img_dsc);
     } else {
         lv_draw_label_dsc_t label_dsc;
         init_label_dsc(&label_dsc, LVGL_FOREGROUND, &quinquefive_24,
