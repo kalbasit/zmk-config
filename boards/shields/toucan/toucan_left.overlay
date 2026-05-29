@@ -1,5 +1,18 @@
 #include "toucan.dtsi"
 
+/* CDC ACM UART node required for CONFIG_ZMK_USB_LOGGING */
+/ {
+    chosen {
+        zephyr,console = &cdc_acm_uart;
+    };
+};
+
+&zephyr_udc0 {
+    cdc_acm_uart: cdc_acm_uart {
+        compatible = "zephyr,cdc-acm-uart";
+    };
+};
+
 &pinctrl {
     spi0_default: spi0_default {
         group1 {

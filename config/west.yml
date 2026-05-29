@@ -8,8 +8,8 @@ manifest:
       url-base: https://github.com/geeksville
   projects:
     - name: zmk
-      remote: zmkfirmware
-      revision: 3cf9006a9377f21c99e944e29e2a507d8c3e9069  # v0.3
+      url: https://github.com/kalbasit/zmk
+      revision: fix/peripheral-battery-bas-notify-crash-v0.3
       import: app/west.yml
     - name: zephyr
       remote: zmkfirmware

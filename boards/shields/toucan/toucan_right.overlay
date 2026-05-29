@@ -2,6 +2,20 @@
 #include <input/processors.dtsi>
 #include <dt-bindings/zmk/input_transform.h>
 
+/* CDC ACM UART node required for CONFIG_ZMK_USB_LOGGING */
+/ {
+    chosen {
+        zephyr,console = &cdc_acm_uart;
+    };
+};
+
+&zephyr_udc0 {
+    status = "okay";
+    cdc_acm_uart: cdc_acm_uart {
+        compatible = "zephyr,cdc-acm-uart";
+    };
+};
+
 &xiao_i2c {
     status = "disabled";
 };
