@@ -30,4 +30,21 @@ config ZMK_POINTING
 config RGBLED_WIDGET_BATTERY_LEVEL_HIGH
     default 40
 
+config TOUCAN_DEBUG_INSTRUMENTATION
+    bool "Toucan: log activity-state, input-rate, conn-params, stack HWM"
+    default n
+    select THREAD_MONITOR
+    select THREAD_NAME
+    select THREAD_STACK_INFO
+    select INIT_STACKS
+    help
+      Emits diagnostic lines on the toucan_dbg log module so we can correlate
+      ZMK activity-state transitions, input-event rate, BLE LE parameter
+      updates, and per-thread stack high-water-marks against future trackpad
+      or split-link bugs. Runs a 1024-byte monitor thread independent of the
+      system workqueue so it survives a sysworkq deadlock. Daily-driver
+      builds should leave this n. To capture diagnostics over USB CDC ACM,
+      uncomment the matching block in config/toucan.conf which enables
+      ZMK_USB_LOGGING alongside this flag.
+
 endif
