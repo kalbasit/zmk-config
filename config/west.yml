@@ -6,6 +6,8 @@ manifest:
       url-base: https://github.com/caksoylar
     - name: geeksville
       url-base: https://github.com/geeksville
+    - name: kalbasit
+      url-base: https://github.com/kalbasit
   projects:
     - name: zmk
       remote: zmkfirmware
@@ -34,10 +36,14 @@ manifest:
           - openthread
           - edtt
           - trusted-firmware-m
-    # Cirque trackpad input module (toucan-specific branch)
+    # Cirque trackpad input module — kalbasit fork carrying toucan stability
+    # fixes on top of geeksville's toucan branch (branch: toucan-fixes):
+    #   - re-arm DR IRQ on every early-return path (trackpad-wedge fix)
+    #   - report input with K_NO_WAIT so a full input queue can never block the
+    #     system workqueue (right-half lock-up fix, kalbasit/zmk-config#215)
     - name: cirque-input-module
-      remote: geeksville
-      revision: toucan
+      remote: kalbasit
+      revision: c3e1fcfd8f9fba2e1f8f09ed664822870bce61ca
     # RGB LED widget
     - name: zmk-rgbled-widget
       remote: caksoylar
