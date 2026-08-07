@@ -116,5 +116,23 @@
                 &zip_scroll_transform INPUT_TRANSFORM_X_INVERT
             >;
         };
+
+        // Gaming layers — GAME=6 and GAME_EXT=7 in config/toucan.keymap; these
+        // must be literals because the keymap's #defines are not visible here.
+        // Gaming is left-hand-only with the right hand on a mouse, so the whole
+        // right half is dead (all &none in the keymap) and the trackpad must not
+        // fight the mouse: zip_xy_scaler 0/1 pins cursor deltas to zero, and
+        // zip_button_behaviors swallows taps/clicks (its stock bindings are
+        // <&none &none &none> for BTN_0/1/2 and it returns STOP).  This silences
+        // trackpad *input* only — the halves stay BLE-paired, so the display and
+        // battery reporting keep working.  Delete this node to bring the
+        // trackpad back while gaming.
+        gaming_mute {
+            layers = <6 7>;
+            input-processors = <
+                &zip_xy_scaler 0 1
+                &zip_button_behaviors
+            >;
+        };
     };
 };

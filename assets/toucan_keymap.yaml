@@ -116,7 +116,7 @@ layers:
       - {t: ▽, type: trans}
       - {t: ▽, type: trans}
       - {t: ▽, type: trans}
-      - {t: ▽, type: trans}
+      - {t: GAME, h: toggle}
       - {t: ▽, type: trans}
       - {t: ▽, type: trans}
       - {t: ▽, type: trans}
@@ -221,4 +221,73 @@ layers:
       - {t: ▽, type: trans}
       - {type: held}
       - {type: held}
+      - ''
+  GAME:
+    - - TAB
+      - Q
+      - W
+      - E
+      - R
+      - ''
+      - ''
+      - ''
+      - ''
+      - ''
+    - - LSHFT
+      - A
+      - S
+      - D
+      - F
+      - ''
+      - ''
+      - ''
+      - ''
+      - ''
+    - - LCTRL
+      - Z
+      - X
+      - C
+      - V
+      - ''
+      - ''
+      - ''
+      - ''
+      - ''
+    - [GAMEFN, SPACE, G, '', '', '']
+  GAMEFN:
+    - - ESC
+      - '1'
+      - '2'
+      - '3'
+      - '4'
+      - ''
+      - ''
+      - ''
+      - ''
+      - ''
+    - - LALT
+      - '5'
+      - '6'
+      - '7'
+      - '8'
+      - ''
+      - ''
+      - ''
+      - ''
+      - ''
+    - - {t: GAME, h: toggle}
+      - '9'
+      - '0'
+      - T
+      - B
+      - ''
+      - ''
+      - ''
+      - ''
+      - ''
+    - - {type: held}
+      - {t: ▽, type: trans}
+      - {t: ▽, type: trans}
+      - ''
+      - ''
       - ''
