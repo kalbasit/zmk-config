@@ -243,7 +243,7 @@ layers:
       - ''
       - ''
       - ''
-    - - LCTRL
+    - - G
       - Z
       - X
       - C
@@ -253,7 +253,7 @@ layers:
       - ''
       - ''
       - ''
-    - [GAMEFN, SPACE, G, '', '', '']
+    - [GAMEFN, SPACE, LCTRL, '', '', '']
   GAMEFN:
     - - ESC
       - '1'

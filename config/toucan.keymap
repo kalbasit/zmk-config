@@ -197,10 +197,10 @@
         // hold-taps, no home-row mods, nothing that can misfire when keys get
         // mashed.
         //
-        // SPACE takes the middle thumb — that is where the thumb naturally falls,
-        // and jump is the most-pressed key on the hand.  Displaced by the mod
-        // column: T and B (parked on GAME_EXT) and G, which lands on the inner
-        // thumb since both target games throw grenades with it.
+        // The thumb carries SPACE, LCTRL and the GAME_EXT hold.  SPACE takes the
+        // middle key — that is where the thumb naturally falls, and jump is the
+        // most-pressed key on the hand.  T and B are displaced by the mod column
+        // and parked on GAME_EXT.
         //
         // The right half is deliberately dead: every position is &none, and the
         // trackpad is muted by the `gaming_mute` node in
@@ -211,10 +211,26 @@
         // right half back: replace its &none bindings here and in
         // gaming_extra_layer, and delete the gaming_mute node.
         //
-        // LSHFT and LCTRL share the pinky column, so sprint-then-slide is one
-        // finger on two keys — same as a real keyboard, and the same answer
-        // applies: C sits under the middle finger for games that crouch on C
-        // (Cyberpunk 2077 does by default).
+        // Why crouch is on a thumb and grenade is on the corner key — both learned
+        // the hard way after two days of play, so don't "fix" them back:
+        //
+        //   * LCTRL started on the bottom-left corner key and was unreachable in a
+        //     fight.  Two reasons.  The pinky was already holding LSHFT one row up,
+        //     so sprint and crouch were the same finger and sliding was physically
+        //     impossible.  And on COLEMAK that corner key is `&ht LSHFT Z` — hold
+        //     for shift, tap for Z — so after years of touch-typing the hand knows
+        //     it only as a sustained hold, never as a quick stab.  Crouch belongs
+        //     on a finger that drives neither WASD nor sprint, which leaves only
+        //     the thumb.
+        //
+        //   * G started on the inner thumb next to SPACE — identical caps, no
+        //     tactile landmark — and jump/grenade got swapped constantly.  Grenade
+        //     is a deliberate, aimed action, so it can afford the corner key, and
+        //     being nowhere near the thumb makes the mix-up impossible.
+        //
+        // Jump and crouch are the adjacent thumb pair now.  That is deliberate:
+        // both are movement, so a mis-hit is self-correcting, unlike burning a
+        // grenade on cooldown.
         // ────────────────────────────────────────────────────────────────────────
         gaming_layer {
             display-name = "GAME";
@@ -226,21 +242,21 @@
         //│ (none) │  LSHFT   │  A       │  S       │  D       │  F       │   │  (none)  │  (none)  │  (none)  │  (none)  │  (none)  │ (none) │
             &none    &kp LSHFT  &kp A      &kp S      &kp D      &kp F          &none      &none      &none      &none      &none      &none
         //├────────┼──────────┼──────────┼──────────┼──────────┼──────────┤   ├──────────┼──────────┼──────────┼──────────┼──────────┼────────┤
-        //│ (none) │  LCTRL   │  Z       │  X       │  C       │  V       │   │  (none)  │  (none)  │  (none)  │  (none)  │  (none)  │ (none) │
-            &none    &kp LCTRL  &kp Z      &kp X      &kp C      &kp V          &none      &none      &none      &none      &none      &none
+        //│ (none) │  G       │  Z       │  X       │  C       │  V       │   │  (none)  │  (none)  │  (none)  │  (none)  │  (none)  │ (none) │
+            &none    &kp G      &kp Z      &kp X      &kp C      &kp V          &none      &none      &none      &none      &none      &none
         //╰────────┴──────────┴──────────┼──────────┼──────────┼──────────┤   ├──────────┼──────────┼──────────┼──────────┴──────────┴────────╯
-        //                               │ GAME_EXT │  SPACE   │  G       │   │  (none)  │  (none)  │  (none)  │
-                                          &mo GAME_EXT  &kp SPACE  &kp G        &none      &none      &none
+        //                               │ GAME_EXT │  SPACE   │  LCTRL   │   │  (none)  │  (none)  │  (none)  │
+                                          &mo GAME_EXT  &kp SPACE  &kp LCTRL    &none      &none      &none
         //                               ╰──────────┴──────────┴──────────╯   ╰──────────┴──────────┴──────────╯
             >;
         };
 
         // Held with the left outer thumb.  1-4 sit directly above Q/W/E/R, just
         // like a real number row, and the pinky column keeps carrying the odd
-        // keys out: ESC above TAB, LALT beside LSHFT, the exit toggle below
-        // LCTRL.  T and B — displaced from GAME by the mod column — are parked
-        // on the bottom row.  The SPACE and G thumbs stay &trans so jump and
-        // grenade still work while this layer is held.
+        // keys out: ESC above TAB, LALT beside LSHFT, the exit toggle on the
+        // corner key.  T and B — displaced from GAME by the mod column — are parked
+        // on the bottom row.  The SPACE and LCTRL thumbs stay &trans so jump and
+        // crouch still work while this layer is held.
         gaming_extra_layer {
             display-name = "GAMEFN";
             bindings = <
@@ -254,7 +270,7 @@
         //│ (none) │ GAME off │  9       │  0       │  T       │  B       │   │  (none)  │  (none)  │  (none)  │  (none)  │  (none)  │ (none) │
             &none    &tog GAME  &kp N9     &kp N0     &kp T      &kp B          &none      &none      &none      &none      &none      &none
         //╰────────┴──────────┴──────────┼──────────┼──────────┼──────────┤   ├──────────┼──────────┼──────────┼──────────┴──────────┴────────╯
-        //                               │  (hold)  │  SPACE   │  G       │   │  (none)  │  (none)  │  (none)  │
+        //                               │  (hold)  │  SPACE   │  LCTRL   │   │  (none)  │  (none)  │  (none)  │
                                            &trans     &trans     &trans         &none      &none      &none
         //                               ╰──────────┴──────────┴──────────╯   ╰──────────┴──────────┴──────────╯
             >;
