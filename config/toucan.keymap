@@ -19,6 +19,11 @@
 #define SYS       3
 #define NAV       4
 #define SYS_ADMIN 5
+// GAME=6 and GAME_EXT=7 are mirrored as literals in the toucan shield's
+// `gaming_mute` input-listener override (`layers = <6 7>`), which silences the
+// trackpad while gaming — keep the two in sync.
+#define GAME      6
+#define GAME_EXT  7
 
 // Configure the layer tap — quick-tap-ms lets tap-then-hold repeat (e.g. backspace).
 &lt {
@@ -58,11 +63,15 @@
         compatible = "zmk,keymap";
 
         // ─── Toucan 36 physical layout note ────────────────────────────────────
-        // The shield matrix has 6 columns per half (42 positions total), but the
-        // Toucan 36 (Cantor layout) only populates the inner 5 columns per half.
-        // Outer column positions RC(r,0) and RC(r,11) have no physical key and
-        // are bound to &none throughout.  The outer thumb keys (leftmost on left
-        // half, rightmost on right half) are also &none — no physical key there.
+        // The shield matrix has 6 columns per half (42 binding slots total), but
+        // the Toucan 36 (Cantor layout) only populates the inner 5 columns per
+        // half.  Outer column positions RC(r,0) and RC(r,11) have no physical key
+        // and are bound to &none throughout.
+        //
+        // All six thumb keys DO exist — three per half, 18 keys per half, 36 in
+        // total.  The outer thumbs (leftmost on the left half, rightmost on the
+        // right) are simply unused on the typing layers and left &none there.
+        // gaming_layer below binds the left outer thumb as its sub-layer hold.
         // ────────────────────────────────────────────────────────────────────────
 
         colemak_layer {
@@ -124,8 +133,8 @@
             display-name = "SYS";
             bindings = <
         //╭────────┬──────────┬──────────┬──────────┬──────────┬──────────╮   ╭──────────┬──────────┬──────────┬──────────┬──────────┬────────╮
-        //│        │          │          │          │          │          │   │          │          │          │          │          │        │
-            &trans   &trans     &trans     &trans     &trans     &trans         &trans     &trans     &trans     &trans     &trans     &trans
+        //│        │          │          │          │          │ GAME on  │   │          │          │          │          │          │        │
+            &trans   &trans     &trans     &trans     &trans     &tog GAME      &trans     &trans     &trans     &trans     &trans     &trans
         //├────────┼──────────┼──────────┼──────────┼──────────┼──────────┤   ├──────────┼──────────┼──────────┼──────────┼──────────┼────────┤
         //│        │ BT 1     │ BT 2     │ BT 3     │ BT 4     │          │   │          │          │          │          │ OUT TOG  │        │
             &trans  &bt BT_SEL 0 &bt BT_SEL 1 &bt BT_SEL 2 &bt BT_SEL 3 &trans  &trans  &trans     &trans     &trans   &out OUT_TOG  &trans
@@ -175,12 +184,96 @@
             >;
         };
 
-        extra_1 {
-            status = "reserved";
+        // ─── Gaming (left hand only) ───────────────────────────────────────────
+        // Toggled on from SYS (hold the left inner thumb, tap the G key) and off
+        // from GAME_EXT (hold the left outer thumb, tap the bottom pinky).
+        //
+        // QWERTY sits one column right of the Colemak alphas, which lands WASD on
+        // the grip the column stagger was cut for: W and S share the column the
+        // stagger pushes furthest forward (y=0 in toucan.dtsi — the middle
+        // finger), A falls under the ring, D under the index.  TAB/LSHFT/LCTRL
+        // then take the pinky column, the one pulled furthest back, exactly
+        // where a staggered board wants them.  Every binding is a plain &kp — no
+        // hold-taps, no home-row mods, nothing that can misfire when keys get
+        // mashed.
+        //
+        // The thumb carries SPACE, LCTRL and the GAME_EXT hold.  SPACE takes the
+        // middle key — that is where the thumb naturally falls, and jump is the
+        // most-pressed key on the hand.  T and B are displaced by the mod column
+        // and parked on GAME_EXT.
+        //
+        // The right half is deliberately dead: every position is &none, and the
+        // trackpad is muted by the `gaming_mute` node in
+        // boards/shields/toucan/toucan.dtsi, which keys off `layers = <6 7>` —
+        // keep those literals in sync with GAME/GAME_EXT above.  The halves stay
+        // BLE-paired (ZMK has no per-layer split shutdown), so the display and
+        // battery reporting keep working; only input is silenced.  To bring the
+        // right half back: replace its &none bindings here and in
+        // gaming_extra_layer, and delete the gaming_mute node.
+        //
+        // Why crouch is on a thumb and grenade is on the corner key — both learned
+        // the hard way after two days of play, so don't "fix" them back:
+        //
+        //   * LCTRL started on the bottom-left corner key and was unreachable in a
+        //     fight.  Two reasons.  The pinky was already holding LSHFT one row up,
+        //     so sprint and crouch were the same finger and sliding was physically
+        //     impossible.  And on COLEMAK that corner key is `&ht LSHFT Z` — hold
+        //     for shift, tap for Z — so after years of touch-typing the hand knows
+        //     it only as a sustained hold, never as a quick stab.  Crouch belongs
+        //     on a finger that drives neither WASD nor sprint, which leaves only
+        //     the thumb.
+        //
+        //   * G started on the inner thumb next to SPACE — identical caps, no
+        //     tactile landmark — and jump/grenade got swapped constantly.  Grenade
+        //     is a deliberate, aimed action, so it can afford the corner key, and
+        //     being nowhere near the thumb makes the mix-up impossible.
+        //
+        // Jump and crouch are the adjacent thumb pair now.  That is deliberate:
+        // both are movement, so a mis-hit is self-correcting, unlike burning a
+        // grenade on cooldown.
+        // ────────────────────────────────────────────────────────────────────────
+        gaming_layer {
+            display-name = "GAME";
+            bindings = <
+        //╭────────┬──────────┬──────────┬──────────┬──────────┬──────────╮   ╭──────────┬──────────┬──────────┬──────────┬──────────┬────────╮
+        //│ (none) │  TAB     │  Q       │  W       │  E       │  R       │   │  (none)  │  (none)  │  (none)  │  (none)  │  (none)  │ (none) │
+            &none    &kp TAB    &kp Q      &kp W      &kp E      &kp R          &none      &none      &none      &none      &none      &none
+        //├────────┼──────────┼──────────┼──────────┼──────────┼──────────┤   ├──────────┼──────────┼──────────┼──────────┼──────────┼────────┤
+        //│ (none) │  LSHFT   │  A       │  S       │  D       │  F       │   │  (none)  │  (none)  │  (none)  │  (none)  │  (none)  │ (none) │
+            &none    &kp LSHFT  &kp A      &kp S      &kp D      &kp F          &none      &none      &none      &none      &none      &none
+        //├────────┼──────────┼──────────┼──────────┼──────────┼──────────┤   ├──────────┼──────────┼──────────┼──────────┼──────────┼────────┤
+        //│ (none) │  G       │  Z       │  X       │  C       │  V       │   │  (none)  │  (none)  │  (none)  │  (none)  │  (none)  │ (none) │
+            &none    &kp G      &kp Z      &kp X      &kp C      &kp V          &none      &none      &none      &none      &none      &none
+        //╰────────┴──────────┴──────────┼──────────┼──────────┼──────────┤   ├──────────┼──────────┼──────────┼──────────┴──────────┴────────╯
+        //                               │ GAME_EXT │  SPACE   │  LCTRL   │   │  (none)  │  (none)  │  (none)  │
+                                          &mo GAME_EXT  &kp SPACE  &kp LCTRL    &none      &none      &none
+        //                               ╰──────────┴──────────┴──────────╯   ╰──────────┴──────────┴──────────╯
+            >;
         };
 
-        extra_2 {
-            status = "reserved";
+        // Held with the left outer thumb.  1-4 sit directly above Q/W/E/R, just
+        // like a real number row, and the pinky column keeps carrying the odd
+        // keys out: ESC above TAB, LALT beside LSHFT, the exit toggle on the
+        // corner key.  T and B — displaced from GAME by the mod column — are parked
+        // on the bottom row.  The SPACE and LCTRL thumbs stay &trans so jump and
+        // crouch still work while this layer is held.
+        gaming_extra_layer {
+            display-name = "GAMEFN";
+            bindings = <
+        //╭────────┬──────────┬──────────┬──────────┬──────────┬──────────╮   ╭──────────┬──────────┬──────────┬──────────┬──────────┬────────╮
+        //│ (none) │  ESC     │  1       │  2       │  3       │  4       │   │  (none)  │  (none)  │  (none)  │  (none)  │  (none)  │ (none) │
+            &none    &kp ESC    &kp N1     &kp N2     &kp N3     &kp N4         &none      &none      &none      &none      &none      &none
+        //├────────┼──────────┼──────────┼──────────┼──────────┼──────────┤   ├──────────┼──────────┼──────────┼──────────┼──────────┼────────┤
+        //│ (none) │  LALT    │  5       │  6       │  7       │  8       │   │  (none)  │  (none)  │  (none)  │  (none)  │  (none)  │ (none) │
+            &none    &kp LALT   &kp N5     &kp N6     &kp N7     &kp N8         &none      &none      &none      &none      &none      &none
+        //├────────┼──────────┼──────────┼──────────┼──────────┼──────────┤   ├──────────┼──────────┼──────────┼──────────┼──────────┼────────┤
+        //│ (none) │ GAME off │  9       │  0       │  T       │  B       │   │  (none)  │  (none)  │  (none)  │  (none)  │  (none)  │ (none) │
+            &none    &tog GAME  &kp N9     &kp N0     &kp T      &kp B          &none      &none      &none      &none      &none      &none
+        //╰────────┴──────────┴──────────┼──────────┼──────────┼──────────┤   ├──────────┼──────────┼──────────┼──────────┴──────────┴────────╯
+        //                               │  (hold)  │  SPACE   │  LCTRL   │   │  (none)  │  (none)  │  (none)  │
+                                           &trans     &trans     &trans         &none      &none      &none
+        //                               ╰──────────┴──────────┴──────────╯   ╰──────────┴──────────┴──────────╯
+            >;
         };
 
         extra_3 {
